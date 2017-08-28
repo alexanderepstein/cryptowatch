@@ -1,0 +1,41 @@
+{
+    "_meta": {
+        "hash": {
+            "sha256": "992d9bd3ab6b1433a9c8937fa59f1292007d39b4edbd4dd179f2b2b858032bc0"
+        },
+        "requires": {},
+        "sources": [
+            {
+                "url": "https://pypi.python.org/simple",
+                "verify_ssl": true
+            }
+        ]
+    },
+    "default": {
+        "adafruit-gpio": {
+            "version": "==1.0.3"
+        },
+        "adafruit-pureio": {
+            "version": "==0.2.1"
+        },
+        "certifi": {
+            "version": "==2017.7.27.1"
+        },
+        "chardet": {
+            "version": "==3.0.4"
+        },
+        "idna": {
+            "version": "==2.6"
+        },
+        "requests": {
+            "version": "==2.18.4"
+        },
+        "spidev": {
+            "version": "==3.2"
+        },
+        "urllib3": {
+            "version": "==1.22"
+        }
+    },
+    "develop": {}
+}
