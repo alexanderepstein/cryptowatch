@@ -26,7 +26,6 @@ import time
 from os import system
 from sys import platform
 
-import cryptoPie.cryptoPie as pie
 import utils.cryptoUtils as crypto
 import utils.cwconfig as cfg
 config = cfg.config()
@@ -85,6 +84,7 @@ def main():
         exit()
     if args.monitor:
         if args.monitor == "pie" or args.monitor == "rpi":
+            import cryptoPie.cryptoPie as pie
             pie.main()
         elif args.monitor == "web":
             print("Web monitor not implemented yet.")

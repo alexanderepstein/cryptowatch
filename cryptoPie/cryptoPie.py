@@ -27,7 +27,7 @@ import time
 
 import utils.cryptoUtils as crypto
 import utils.cwconfig as cfg
-
+import cryptoPie.Adafruit_CharLCD
 
 config = cfg.config()
 # The wiring for the LCD is as follows:
@@ -60,7 +60,7 @@ db7 = 11
 # Screen Size
 cols = 16
 rows = 2
-# screen = Adafruit_CharLCD.Adafruit_CharLCD(registerSelect,enable,db4,db5,db6,db7,cols,rows) # initialiing the screen
+screen = Adafruit_CharLCD.Adafruit_CharLCD(registerSelect,enable,db4,db5,db6,db7,cols,rows) # initializing the screen
 delayTime = 10
 waitTime = 500
 
