@@ -82,10 +82,13 @@ def showCryptoStats(coinType="ethereum"):
     coinType = coinType.lower()
     if coinType == "ethereum":
         cryptoTicker = "ETH"
+        address = config.etherAddress
     elif coinType == "bitcoin":
         cryptoTicker = "BTC"
+        address = config.bitcoinAddress
     elif coinType == "litecoin":
         cryptoTicker = "LTC"
+        address = config.litecoinAddress
     else:
         raise ValueError('Error: invalid coin type')
     response = crypto.queryCMC(coinType)
@@ -105,7 +108,7 @@ def showCryptoStats(coinType="ethereum"):
             screen.message("1H: Daaayum")
     sleepMicroseconds(waitTime)
     scrollRight()
-    if totalFiat != 0:
+    if totalFiat != 0 and address is not None :
         screen.clear()
         screen.home()
         screen.message("%s: %.2f" % (cryptoTicker, totalCrypto))
