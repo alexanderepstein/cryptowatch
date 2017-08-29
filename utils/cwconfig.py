@@ -26,7 +26,14 @@ from os import path
 from os import system
 from sys import platform
 configParser = configparser.RawConfigParser()
-configFilePath = '.crypto.cfg'
+
+if platform == "linux" or platform == "linux2" or platform == "darwin":
+    from os.path import expanduser
+    home = expanduser("~")
+    configFilePath = home + '/.crypto.cfg'
+else:
+    configFilePath = 'C:/.crypto.cfg'
+    
 configParser.read(configFilePath)
 if not path.exists(configFilePath):
     with open(configFilePath, 'w+') as file:
@@ -35,6 +42,7 @@ if not path.exists(configFilePath):
         file.write("bitcoinAddress = \n")
         file.write("litecoinAddress = \n")
         file.write("fiatCurrency = USD\n")
+
 """Config Class to be shared throughout cryptowatch"""
 class config(object):
 
@@ -42,11 +50,6 @@ class config(object):
         self.etherAddress = configParser.get('cryptowatch-config', 'etherAddress').split(", ")
         self.bitcoinAddress = configParser.get('cryptowatch-config', 'bitcoinAddress').split(", ")
         self.litecoinAddress = configParser.get('cryptowatch-config', 'litecoinAddress').split(", ")
-        """self.etherAddress = ["0x585c4e1aa22d9Cc92d1a6b3fAe0c4a5274b5a884"] # ["0xea674fdde714fd979de3edf0f56aa9716b898ec8","0x585c4e1aa22d9Cc92d1a6b3fAe0c4a5274b5a884"]
-        self.bitcoinAddress = ["1K7LpbNMHV5BZnj28XTianRaFZc5FwQpXr",
-                               "1KJuLGpDoVMA4q4n6taDE2JVtnjkXhPYv2",
-                               "1DvcjgkYntkQ8tqZDqHDz3nZ7dFL7U9VeR"]
-        self.litecoinAddress = ["LYmpJZm1WrP5FSnxwkV2TTo5SkAF4Eha31"]"""
         self.fiatCurrency = configParser.get('cryptowatch-config', 'fiatCurrency')
         pass
 

@@ -26,11 +26,17 @@ import time
 from os import system
 from sys import platform
 
-
 import cryptoPie.cryptoPie as pie
 import utils.cryptoUtils as crypto
 import utils.cwconfig as cfg
 config = cfg.config()
+
+if platform == "linux" or platform == "linux2" or platform == "darwin":
+    from os.path import expanduser
+    home = expanduser("~")
+    monitorFilePath = home + '/.cryptoConsole'
+else:
+    monitorFilePath = 'C:/.cryptoConsole'
 
 def clear():
     if platform == "linux" or platform == "linux2" or platform == "darwin":
@@ -57,20 +63,25 @@ def consoleMonitor(coinType):
     dailyPercentage = float(crypto.parseCryptoData(response, "DP"))
     totalFiat = float(crypto.getTotalFiat(crypto.parseCryptoData(response, "ER"), coinType))
     totalCrypto = float(totalFiat) / float(exchangeRate)
-    with open('.cryptoConsole', 'a+') as file:
+    with open(monitorFilePath, 'a+') as file:
         file.write("%s->%s:%.2f\n" % (cryptoTicker, config.fiatCurrency, exchangeRate))
         file.write("1H: %.2f  24H: %.2f\n" % (hourlyPercentage, dailyPercentage))
         if totalFiat != 0 and address is not None :
             file.write("%s: %.2f\n" % (cryptoTicker, totalCrypto))
-            file.write("%s: %.2f\n\n" % (config.fiatCurrency, totalFiat))
+            file.write("%s: %.2f\n" % (config.fiatCurrency, totalFiat))
+        file.write("\n")
 
 def main():
     parser = argparse.ArgumentParser(prog="Cryptowatch",description='Track prices and account balances for bitcoin, ethereum, and litecoin')
-    parser.add_argument("-m", "--monitor", action="store_true" ,help="Choose which cryptowatch monitor to use")
+    parser.add_argument("-m", "--monitor",help="Choose which cryptowatch monitor to use")
     parser.add_argument("-v", "--version", action="store_true", help="Display the current version of cryptowatch")
+    parser.add_argument("-c", "--config", action = "store_true", help="Edit the config file for cryptowatch")
     args = parser.parse_args()
     if args.version:
         print("Cryptowatch Version 0.0.1")
+        exit()
+    if args.config:
+        config.edit()
         exit()
     if args.monitor:
         if args.monitor == "pie" or args.monitor == "rpi":
@@ -80,32 +91,29 @@ def main():
             exit()
         elif args.monitor == "console":
             print("Loading...")
-            open('.cryptoConsole', 'w+').close()
+            open(monitorFilePath, 'w+').close()
             while True:
                 consoleMonitor("ethereum")
                 consoleMonitor("bitcoin")
                 consoleMonitor("litecoin")
                 clear()
                 print("Cryptowatch")
-                with open('.cryptoConsole', 'r') as file:
+                with open(monitorFilePath, 'r') as file:
                     print(file.read())
                 print("Watching...")
                 time.sleep(2)
-                open('.cryptoConsole', 'w').close()
+                open(monitorFilePath, 'w').close()
         else:
             print("Error: invalid monitor type")
             exit()
     else:
             print("Loading...")
-            open('.cryptoConsole', 'w+').close()
+            open(monitorFilePath, 'w+').close()
             consoleMonitor("ethereum")
             consoleMonitor("bitcoin")
             consoleMonitor("litecoin")
             clear()
             print("Cryptowatch")
-            with open('.cryptoConsole', 'r') as file:
+            with open(monitorFilePath, 'r') as file:
                 print(file.read())
-            open('.cryptoConsole', 'w').close()
-
-
-main()
+            open(monitorFilePath, 'w').close()
