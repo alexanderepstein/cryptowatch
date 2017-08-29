@@ -43,6 +43,14 @@ def clear():
     elif platform == "win32":
         system("cls")
 
+def printHeader():
+    print('_________                        __                         __         .__')
+    print('\_   ___ \_______ ___.__._______/  |_  ______  _  _______ _/  |_  ____ |  |__')
+    print('/    \  \/\_  __ <   |  |\____ \   __\/  _ \ \/ \/ /\__  \\\\   __\/ ___\|  |  \\')
+    print('\     \____|  | \/\___  ||  |_> >  | (  <_> )     /  / __ \|  | \  \___|   Y  \\')
+    print('\______  /|__|   / ____||   __/|__|   \____/ \/\_/  (____  /__|  \___  >___|  /')
+    print('       \/        \/     |__|                            \/          \/     \/')
+
 def consoleMonitor(coinType):
     coinType = coinType.lower()
     if coinType == "ethereum":
@@ -85,10 +93,11 @@ def main():
     if args.monitor:
         if args.monitor == "pie" or args.monitor == "rpi":
             import cryptoPie.cryptoPie as pie
+            printHeader()
             pie.main()
         elif args.monitor == "web":
+            printHeader()
             print("Web monitor not implemented yet.")
-            exit()
         elif args.monitor == "console":
             print("Loading...")
             open(monitorFilePath, 'w+').close()
@@ -97,7 +106,7 @@ def main():
                 consoleMonitor("bitcoin")
                 consoleMonitor("litecoin")
                 clear()
-                print("Cryptowatch")
+                printHeader()
                 with open(monitorFilePath, 'r') as file:
                     print(file.read())
                 print("Watching...")
@@ -105,7 +114,6 @@ def main():
                 open(monitorFilePath, 'w').close()
         else:
             print("Error: invalid monitor type")
-            exit()
     else:
             print("Loading...")
             open(monitorFilePath, 'w+').close()
@@ -113,7 +121,8 @@ def main():
             consoleMonitor("bitcoin")
             consoleMonitor("litecoin")
             clear()
-            print("Cryptowatch")
+            printHeader()
             with open(monitorFilePath, 'r') as file:
                 print(file.read())
             open(monitorFilePath, 'w').close()
+    exit()
