@@ -21,7 +21,8 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-import cwconfig as cfg
+
+import utils.cwconfig as cfg
 
 config = cfg.config()
 
@@ -222,13 +223,13 @@ def printCryptoData(coinType):
     exchangeRate = parseCryptoData(response, "ER")
     totalFiat = getTotalFiat(exchangeRate, coinType)
     totalCrypto = float(totalFiat) / float(exchangeRate)
-    print "%s Price (%s): %s" % (coinType, config.fiatCurrency, exchangeRate)
-    print "Daily Volume (%s): %s" % (config.fiatCurrency, parseCryptoData(response, "DV"))
-    print "1 Hour Percent Change: %s%%" % parseCryptoData(response, "HP")
-    print "1 Day Percent Change: %s%%" % parseCryptoData(response, "DP")
-    print "1 Week Percent Change: %s%%" % parseCryptoData(response, "WP")
-    print "Total %s: %s" % (coinType, totalCrypto)
-    print "Total Fiat (%s): %s" % (config.fiatCurrency, totalFiat)
+    print("%s Price (%s): %s" % (coinType, config.fiatCurrency, exchangeRate))
+    print("Daily Volume (%s): %s" % (config.fiatCurrency, parseCryptoData(response, "DV")))
+    print("1 Hour Percent Change: %s%%" % parseCryptoData(response, "HP"))
+    print("1 Day Percent Change: %s%%" % parseCryptoData(response, "DP"))
+    print("1 Week Percent Change: %s%%" % parseCryptoData(response, "WP"))
+    print("Total %s: %s" % (coinType, totalCrypto))
+    print("Total Fiat (%s): %s" % (config.fiatCurrency, totalFiat))
 
 
 """
@@ -236,10 +237,10 @@ Output: Prints out all crypo data about the 3 supported currencies
 Logic: Print data about each currency one after another
 """
 def printAllCryptoData():
-    print
+    print()
     printCryptoData("ethereum")
-    print
+    print()
     printCryptoData("bitcoin")
-    print
+    print()
     printCryptoData("litecoin")
-    print
+    print()

@@ -24,13 +24,10 @@
 
 
 import time
-import os
-import sys
 
-sys.path.append("..")
-import cryptoUtils as crypto
-import cwconfig as cfg
-sys.path.remove("..")
+import utils.cryptoUtils as crypto
+import utils.cwconfig as cfg
+
 
 config = cfg.config()
 # The wiring for the LCD is as follows:
@@ -128,8 +125,3 @@ def main():
         showCryptoStats("ethereum")
         showCryptoStats("bitcoin")
         showCryptoStats("litecoin")
-
-
-if __name__ == '__main__':
-    # main()
-    crypto.printAllCryptoData()  # useful for debugging

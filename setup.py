@@ -22,7 +22,7 @@ with codecs.open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
 
 # Load the package's __version__.py module as a dictionary.
 about = {}
-with open(os.path.join(here, 'lib', "__version__.py")) as f:
+with open(os.path.join(here, "__version__.py")) as f:
     exec(f.read(), about)
 
 # Support "$ setup.py publish".
@@ -49,17 +49,19 @@ setup(
     author_email=EMAIL,
     url=URL,
     packages=find_packages(exclude=('tests',)),
-#     entry_points={
-#         'console_scripts': ['mycli=mymodule:cli'],
-#     },
+    entry_points={
+        'console_scripts': ['cryptowatch=cryptoConsole.cryptowatch:main'],
+    },
     install_requires=required,
     include_package_data=True,
     license='MIT',
     classifiers=[
         'License :: OSI Approved :: MIT License',
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 2.6',
-        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy'
     ],
