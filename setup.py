@@ -13,17 +13,12 @@ DESCRIPTION = 'Track prices and account balances for bitcoin, ethereum, and lite
 URL = 'https://github.com/alexanderepstein/cryptowatch'
 EMAIL = 'epsteina@wit.edu'
 AUTHOR = 'Alexander Epstein'
-
+VERSION = '0.0.3'
 here = os.path.abspath(os.path.dirname(__file__))
 
 # Import the README and use it as the long-description.
 with codecs.open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = '\n' + f.read()
-
-# Load the package's __version__.py module as a dictionary.
-about = {}
-with open(os.path.join(here, "__version__.py")) as f:
-    exec(f.read(), about)
 
 # Support "$ setup.py publish".
 if sys.argv[-1] == "publish":
@@ -42,7 +37,7 @@ required = [
 # Where the magic happens:
 setup(
     name=NAME,
-    version=about['__version__'],
+    version=VERSION,
     description=DESCRIPTION,
     long_description=long_description,
     author=AUTHOR,

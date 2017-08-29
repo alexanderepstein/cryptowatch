@@ -23,12 +23,13 @@
 # SOFTWARE.
 import argparse
 import time
-from os import system
-from sys import platform
 
 import utils.cryptoUtils as crypto
 import utils.cwconfig as cfg
 config = cfg.config()
+
+
+
 
 if platform == "linux" or platform == "linux2" or platform == "darwin":
     from os.path import expanduser
@@ -85,7 +86,7 @@ def main():
     parser.add_argument("-c", "--config", action = "store_true", help="Edit the config file for cryptowatch")
     args = parser.parse_args()
     if args.version:
-        print("Cryptowatch Version 0.0.1")
+        print("Cryptowatch Version 0.0.3")
         exit()
     if args.config:
         config.edit()
