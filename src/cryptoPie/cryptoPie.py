@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # MIT License
 #
 # Copyright (c) 2017 Alex Epstein
