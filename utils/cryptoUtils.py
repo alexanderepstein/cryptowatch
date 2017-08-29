@@ -66,7 +66,7 @@ def request(url):
     except ImportError:
         raise ImportError("Error: no requests module found, install it with pip")
     response = requests.get(url)
-    if response.status_code != 200:
+    if response.status_code != 200 and response.status_code != 500 and response.status_code != 404:
         raise Exception('Error: requesting the api resulted in status code %s' %
                         response.status_code)
     return response.text
@@ -87,11 +87,13 @@ def getTotalEther():
     for address in getAddress("ether"):
         url = "https://api.etherscan.io/api?module=account&action=balance&address=" + \
             address + "&tag=latest&apikey=" + etherscanAPIKey
-        response = json.loads(request(url))
         try:
+            response = json.loads(request(url))
             totalEther += float(response['result']) / pow(10, 18)
         except ValueError:
-            raise ValueError('Error: ether address %s is invalid' % address)
+            pass
+        except KeyError:
+            pass
     return totalEther
 
 
@@ -108,11 +110,13 @@ def getTotalBitcoin():
     totalBitcoin = 0.0
     for address in getAddress("bitcoin"):
         url = "https://blockchain.info/rawaddr/" + address
-        response = json.loads(request(url))
         try:
+            response = json.loads(request(url))
             totalBitcoin += float(response['final_balance']) / pow(10, 8)
         except ValueError:
-            raise ValueError('Error: bitcoin address %s is invalid' % address)
+            pass
+        except KeyError:
+            pass
     return totalBitcoin
 
 
@@ -129,11 +133,13 @@ def getTotalLitecoin():
     totalLitecoin = 0.0
     for address in getAddress("litecoin"):
         url = "https://chain.so/api/v2/get_address_balance/LTC/" + address
-        response = json.loads(request(url))
         try:
+            response = json.loads(request(url))
             totalLitecoin += float(response['data']['confirmed_balance'])
         except ValueError:
-            raise ValueError('Error: litecoin address %s is invalid' % address)
+            pass
+        except KeyError:
+            pass
     return totalLitecoin
 
 
