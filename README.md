@@ -1,10 +1,20 @@
-# Cryptowatch
 <div align="center">
+
+# Cryptowatch
 
 #### Monitor prices and account balaces for bitcoin, ethereum, and litecoin
 #### Use either the terminal or Raspberry Pi LCD for monitoring
-[![PyPI](https://img.shields.io/pypi/v/cryptowatch.svg)](https://pypi.python.org/pypi/cryptowatch)  [![license](https://img.shields.io/github/license/mashape/apistatus.svg?style=plastic)]()
-[![cryptowatch.png](https://s26.postimg.org/53u777pu1/cryptowatch.png)](https://postimg.org/image/y68ha1c3p/)
+
+![PythonVer](https://img.shields.io/pypi/pyversions/cryptowatch.svg)
+[![PyPI](https://img.shields.io/pypi/v/cryptowatch.svg)](https://pypi.python.org/pypi/cryptowatch) [![license](https://img.shields.io/github/license/mashape/apistatus.svg?style=plastic)]()
+
+</div>
+
+### Console Monitor
+
+<div align="center">
+
+[![cryptowatch.png](https://s26.postimg.org/53u777pu1/cryptowatch.png)](https://postimg.org/image/y68ha1c3p/) 	
 
 </div>
 
