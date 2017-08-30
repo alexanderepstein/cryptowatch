@@ -86,9 +86,10 @@ def consoleMonitor(coinType, monitorFilePath):
         file.write("%s->%s:%.2f\n" % (cryptoTicker, config.fiatCurrency, exchangeRate))
         file.write("1H: %.2f%%  24H: %.2f%%\n" % (hourlyPercentage, dailyPercentage))
         file.write("7 day: %.2f%%   24H Volume: %.2f\n" % (weeklyPercentage, dailyVolume))
-        if totalFiat != 0 and address is not None :
+        if address is not None :
             file.write("%s: %.2f   %s: %.2f\n" % (cryptoTicker, totalCrypto, config.fiatCurrency, totalFiat))
         file.write("\n")
+    return totalFiat
 
 def main():
     if platform == "linux" or platform == "linux2" or platform == "darwin":
@@ -125,9 +126,12 @@ def main():
             print("Error: the path provided is a directory")
             exit()
         print("Loading...")
-        consoleMonitor("ethereum", filePath)
-        consoleMonitor("bitcoin",filePath)
-        consoleMonitor("litecoin", filePath)
+        totalFiat = 0.00
+        totalFiat += consoleMonitor("ethereum", filePath)
+        totalFiat += consoleMonitor("bitcoin", filePath)
+        totalFiat += consoleMonitor("litecoin", filePath)
+        with open(filePath, 'a+') as file:
+            file.write("Total %s: %.2f\n" %(config.fiatCurrency, totalFiat))
         clear()
         printHeader()
     elif args.monitor:
@@ -141,11 +145,14 @@ def main():
             open(monitorFilePath, 'w+').close()
             try:
                 while True:
-                    consoleMonitor("ethereum", monitorFilePath)
-                    consoleMonitor("bitcoin", monitorFilePath)
-                    consoleMonitor("litecoin", monitorFilePath)
+                    totalFiat = 0.00
+                    totalFiat += consoleMonitor("ethereum", monitorFilePath)
+                    totalFiat += consoleMonitor("bitcoin", monitorFilePath)
+                    totalFiat += consoleMonitor("litecoin", monitorFilePath)
                     clear()
                     printHeader()
+                    with open(monitorFilePath, 'a+') as file:
+                        file.write("Total %s: %.2f\n" %(config.fiatCurrency, totalFiat))
                     with open(monitorFilePath, 'r') as file:
                         print(file.read())
                     print("Last Updated: %s" % datetime.now().strftime('%H:%M:%S'))
@@ -161,11 +168,14 @@ def main():
     else:
             print("Loading...")
             open(monitorFilePath, 'w+').close()
-            consoleMonitor("ethereum", monitorFilePath)
-            consoleMonitor("bitcoin", monitorFilePath)
-            consoleMonitor("litecoin", monitorFilePath)
+            totalFiat = 0.00
+            totalFiat += consoleMonitor("ethereum", monitorFilePath)
+            totalFiat += consoleMonitor("bitcoin", monitorFilePath)
+            totalFiat += consoleMonitor("litecoin", monitorFilePath)
             clear()
             printHeader()
+            with open(monitorFilePath, 'a+') as file:
+                file.write("Total %s: %.2f\n" %(config.fiatCurrency, totalFiat))
             with open(monitorFilePath, 'r') as file:
                 print(file.read())
             open(monitorFilePath, 'w').close()
