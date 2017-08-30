@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env bash
 # MIT License
 #
 # Copyright (c) 2017 Alex Epstein
@@ -22,5 +22,5 @@
 # SOFTWARE.
 
 python3 setup.py sdist
-version = $(cryptowatch --version | grep -Eo [0-9.]*)
+version=$(cryptowatch --version | grep -Eo "[0-9.]*")
 twine upload dist/cryptowatch-$version.tar.gz
