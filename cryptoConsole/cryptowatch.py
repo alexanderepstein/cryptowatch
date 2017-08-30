@@ -25,7 +25,7 @@ import argparse
 import time
 from sys import platform
 from os import system
-
+from os.path import exists
 
 import utils.cryptoUtils as crypto
 import utils.cwconfig as cfg
@@ -114,6 +114,11 @@ def main():
                 from re import sub
                 from os.path import expanduser
                 filePath = sub("~",expanduser("~"),filePath)
+        if exists(filePath):
+            answer = input("File already exists at %s, overwrite it? [Y/n] " % filePath)
+            answer = answer.lower()
+            if answer != "y" and answer != "yes":
+                exit()
         try:
             open(filePath, 'w+').close()
         except IsADirectoryError:
