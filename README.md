@@ -20,7 +20,7 @@
 
 ## Install
 ```bash
-pip3 install cryptowatch || pip install cryptowatch
+pip3 install cryptowatch
 ```
 
 ## Usage
