@@ -45,7 +45,9 @@ If this project helped you in any way and you feel like buying a broke college k
 [![Donate](https://img.shields.io/badge/Donate-Venmo-blue.svg)](https://venmo.com/AlexanderEpstein)
 [![Donate](https://img.shields.io/badge/Donate-SquareCash-green.svg)](https://cash.me/$AlexEpstein)
 
+###### BTC: 1PSVVs6EnhdRGhUFb6Dz6EGWKKyHe3xACe
 ###### ETH: 0x585c4e1aa22d9Cc92d1a6b3fAe0c4a5274b5a884
+###### LTC: Lf3SDjkck7iqy5TGn3wqzNvf5LL97JNhGk
 
 ## License
 
