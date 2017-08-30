@@ -13,12 +13,19 @@ DESCRIPTION = 'Track prices and account balances for bitcoin, ethereum, and lite
 URL = 'https://github.com/alexanderepstein/cryptowatch'
 EMAIL = 'epsteina@wit.edu'
 AUTHOR = 'Alexander Epstein'
-VERSION = '0.0.3'
+VERSION = '0.0.4'
 here = os.path.abspath(os.path.dirname(__file__))
 
 # Import the README and use it as the long-description.
-with codecs.open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
-    long_description = '\n' + f.read()
+readme_file = os.path.join(here, 'README.md')
+try:
+    from m2r import parse_from_file
+    long_description = parse_from_file(readme_file)
+except ImportError:
+    # m2r may not be installed in user environment
+    with open(readme_file) as f:
+        long_description = f.read()
+
 
 # Support "$ setup.py publish".
 if sys.argv[-1] == "publish":

@@ -104,7 +104,7 @@ def main():
     parser.add_argument("-v", "--version", action="store_true", help="Display the current version of cryptowatch")
     args = parser.parse_args()
     if args.version:
-        print("Cryptowatch Version 0.0.3")
+        print("Cryptowatch Version 0.0.4")
     elif args.config:
         config.edit()
     elif args.file != "":
@@ -135,9 +135,6 @@ def main():
             import cryptoPie.cryptoPie as pie
             printHeader()
             pie.main()
-        """elif args.monitor == "web":
-            printHeader()
-            print("Web monitor not implemented yet.")"""
         elif args.monitor == "console" or args.monitor == "terminal":
             from datetime import datetime
             print("Loading...")
