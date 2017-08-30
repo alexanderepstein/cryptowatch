@@ -135,9 +135,9 @@ def main():
             import cryptoPie.cryptoPie as pie
             printHeader()
             pie.main()
-        elif args.monitor == "web":
+        """elif args.monitor == "web":
             printHeader()
-            print("Web monitor not implemented yet.")
+            print("Web monitor not implemented yet.")"""
         elif args.monitor == "console" or args.monitor == "terminal":
             from datetime import datetime
             print("Loading...")
