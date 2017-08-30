@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import configparser
-from os import path
+from os.path import exists
 from os import system
 from sys import platform
 configParser = configparser.RawConfigParser()
@@ -33,34 +33,53 @@ if platform == "linux" or platform == "linux2" or platform == "darwin":
     configFilePath = home + '/.crypto.cfg'
 else:
     configFilePath = 'C:/.crypto.cfg'
-    
-configParser.read(configFilePath)
-if not path.exists(configFilePath):
-    with open(configFilePath, 'w+') as file:
-        file.write("[cryptowatch-config]\n")
-        file.write("etherAddress = \n")
-        file.write("bitcoinAddress = \n")
-        file.write("litecoinAddress = \n")
-        file.write("fiatCurrency = USD\n")
+
+comment = """
+# The wiring for the LCD is as follows:
+# 1 : GND                    - GROUND
+# 2 : 5V                     - 5V
+# 3 : Contrast (0-5V)*       - GROUND
+# 4 : RS (Register Select)   - GPIO 26
+# 5 : R/W (Read Write)       - GROUND
+# 6 : Enable or Strobe       - GPIO 19
+# 7 : Data Bit 0             - NOT USED
+# 8 : Data Bit 1             - NOT USED
+# 9 : Data Bit 2             - NOT USED
+# 10: Data Bit 3             - NOT USED
+# 11: Data Bit 4             - GPIO 13
+# 12: Data Bit 5             - GPIO 06
+# 13: Data Bit 6             - GPIO 05
+# 14: Data Bit 7             - GPIO 11
+# 15: LCD Backlight +5V**    - 5V
+# 16: LCD Backlight GND      - GROUND
+
+# Setting up the pin -> GPIO variables
+# Change these if you use different GPIO pins
+"""
+
+
+
+
 
 """Config Class to be shared throughout cryptowatch"""
 class config(object):
 
     def __init__(self):
-        self.etherAddress = configParser.get('cryptowatch-config', 'etherAddress').split(", ")
-        self.bitcoinAddress = configParser.get('cryptowatch-config', 'bitcoinAddress').split(", ")
-        self.litecoinAddress = configParser.get('cryptowatch-config', 'litecoinAddress').split(", ")
-        self.fiatCurrency = configParser.get('cryptowatch-config', 'fiatCurrency')
+        self.createConfigFile()
+        configParser.read(configFilePath)
+        self.etherAddress = configParser.get('cryptoConsole-config', 'etherAddress').split(", ")
+        self.bitcoinAddress = configParser.get('cryptoConsole-config', 'bitcoinAddress').split(", ")
+        self.litecoinAddress = configParser.get('cryptoConsole-config', 'litecoinAddress').split(", ")
+        self.fiatCurrency = configParser.get('cryptoConsole-config', 'fiatCurrency')
+        self.registerSelect = configParser.get('cryptoPie-config', 'registerSelect')
+        self.enable = configParser.get('cryptoPie-config', 'enable')
+        self.db4 = configParser.get('cryptoPie-config', 'db4')
+        self.db5 = configParser.get('cryptoPie-config', 'db5')
+        self.db6 = configParser.get('cryptoPie-config', 'db6')
+        self.db7 = configParser.get('cryptoPie-config', 'db7')
         pass
 
     def edit(self):
-        if not path.exists(configFilePath):
-            with open(configFilePath, 'w+') as file:
-                file.write("[cryptowatch-config]\n")
-                file.write("etherAddress = \n")
-                file.write("bitcoinAddress = \n")
-                file.write("litecoinAddress = \n")
-                file.write("fiatCurrency = USD\n")
         self.openFile(configFilePath)
 
     def openFile(self,filePath):
@@ -70,3 +89,24 @@ class config(object):
             system("open " + filePath)
         elif platform == "win32":
             system("start " + filePath)
+
+    def createConfigFile(self):
+        if not exists(configFilePath):
+            with open(configFilePath, 'w+') as file:
+                file.write("[cryptoConsole-config]\n")
+                file.write("etherAddress = \n")
+                file.write("bitcoinAddress = \n")
+                file.write("litecoinAddress = \n")
+                file.write("fiatCurrency = USD\n\n")
+                file.write("[cryptoPie-config]\n\n")
+                file.write("# GPIO Configuration\n")
+                file.write("registerSelect = 26\n")
+                file.write("enable = 19\n")
+                file.write("db4 = 13\n")
+                file.write("db5 = 11\n")
+                file.write("db6 = 5\n")
+                file.write("db7 = 11\n\n")
+                file.write("# LCD Screen Variables\n")
+                file.write("cols = 16\n")
+                file.write("rows = 2\n")
+                file.write(comment)

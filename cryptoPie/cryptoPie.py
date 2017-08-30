@@ -30,36 +30,17 @@ import utils.cwconfig as cfg
 import cryptoPie.Adafruit_CharLCD
 
 config = cfg.config()
-# The wiring for the LCD is as follows:
-# 1 : GND                    - GROUND
-# 2 : 5V                     - 5V
-# 3 : Contrast (0-5V)*       - GROUND
-# 4 : RS (Register Select)   - GPIO 26
-# 5 : R/W (Read Write)       - GROUND
-# 6 : Enable or Strobe       - GPIO 19
-# 7 : Data Bit 0             - NOT USED
-# 8 : Data Bit 1             - NOT USED
-# 9 : Data Bit 2             - NOT USED
-# 10: Data Bit 3             - NOT USED
-# 11: Data Bit 4             - GPIO 13
-# 12: Data Bit 5             - GPIO 06
-# 13: Data Bit 6             - GPIO 05
-# 14: Data Bit 7             - GPIO 11
-# 15: LCD Backlight +5V**    - 5V
-# 16: LCD Backlight GND      - GROUND
 
-# Setting up the pin -> GPIO variables
-# Change these if you use different GPIO pins
-registerSelect = 26
-enable = 19
-db4 = 13
-db5 = 6
-db6 = 5
-db7 = 11
+registerSelect = config.registerSelect
+enable = config.enable
+db4 = config.db4
+db5 = config.db5
+db6 = config.db6
+db7 = config.db7
 
 # Screen Size
-cols = 16
-rows = 2
+cols = config.cols
+rows = config.rows
 screen = Adafruit_CharLCD.Adafruit_CharLCD(registerSelect,enable,db4,db5,db6,db7,cols,rows) # initializing the screen
 delayTime = 10
 waitTime = 500
