@@ -21,6 +21,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-python3 setup.py sdist
+echo -n "Packaging cryptowatch into wheel.."
 version=$(cryptowatch --version | grep -Eo "[0-9.]*")
-twine upload dist/cryptowatch-$version.tar.gz
+python3 setup.py bdist_wheel --python-tag=py3 > /dev/null || echo "Failure!" &
+
+while [ ! -f dist/cryptowatch-$version-py3-none-any.whl ];do
+  echo -n "."
+  sleep .5
+done
+echo "Success!"
+
+
+echo -n "Uploading wheel to PyPi..."
+twine upload dist/cryptowatch-$version-py3-none-any.whl > /dev/null || echo "Failure!"
+echo "Success!"
