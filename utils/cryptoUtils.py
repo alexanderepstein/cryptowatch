@@ -24,6 +24,7 @@
 
 import utils.cwconfig as cfg
 
+
 config = cfg.config()
 
 
@@ -130,10 +131,12 @@ Logic:
 """
 def getTotalLitecoin():
     import json
+    from time import sleep
     totalLitecoin = 0.0
     for address in getAddress("litecoin"):
         url = "https://chain.so/api/v2/get_address_balance/LTC/" + address
         try:
+            sleep(1) #preventing requst rate limit
             response = json.loads(request(url))
             totalLitecoin += float(response['data']['confirmed_balance'])
         except ValueError:

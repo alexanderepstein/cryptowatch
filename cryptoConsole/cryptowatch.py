@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import argparse
-import time
+from time import sleep
 from sys import platform
 from os import system
 from os.path import exists
@@ -157,7 +157,7 @@ def main():
                         print(file.read())
                     print("Last Updated: %s" % datetime.now().strftime('%H:%M:%S'))
                     print("Watching...")
-                    time.sleep(2)
+                    sleep(2)
                     open(monitorFilePath, 'w').close()
             except KeyboardInterrupt:
                 open(monitorFilePath, 'w').close()
