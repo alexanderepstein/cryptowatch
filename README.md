@@ -6,7 +6,7 @@
 #### Use either the terminal or Raspberry Pi LCD for monitoring
 
 ![PythonVer](https://img.shields.io/pypi/pyversions/cryptowatch.svg)
-[![PyPI](https://img.shields.io/pypi/v/cryptowatch.svg)](https://pypi.python.org/pypi/cryptowatch) [![license](https://img.shields.io/github/license/mashape/apistatus.svg?style=plastic)]()
+[![PyPI](https://img.shields.io/pypi/v/cryptowatch.svg)](https://pypi.python.org/pypi/cryptowatch) ![platform](https://img.shields.io/badge/platform-OSX%2C%20Linux%20%26%20Windows-blue.svg) [![license](https://img.shields.io/github/license/mashape/apistatus.svg?style=plastic)]()
 
 </div>
 
@@ -40,7 +40,7 @@ optional arguments:
 ```
 
 ## Donate
-If this project helped you in any way and you feel like buying a broke college kid a cup of coffee
+If this project helped you in any way and you feel like supporting me
 
 [![Donate](https://img.shields.io/badge/Donate-Venmo-blue.svg)](https://venmo.com/AlexanderEpstein)
 [![Donate](https://img.shields.io/badge/Donate-SquareCash-green.svg)](https://cash.me/$AlexEpstein)

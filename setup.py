@@ -26,12 +26,6 @@ except ImportError:
     with open(readme_file) as f:
         long_description = f.read()
 
-
-# Support "$ setup.py publish".
-if sys.argv[-1] == "publish":
-    os.system("python setup.py sdist bdist_wheel upload")
-    sys.exit()
-
 # What packages are required for this module to be executed?
 required = [
      'requests', 'Adafruit_GPIO'
