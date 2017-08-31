@@ -54,7 +54,7 @@ def sleepMicroseconds(self, microseconds):
 
 
 def scrollRight():
-    for x in range(16):
+    for x in range(cols):
         screen.move_right()
         sleepMicroseconds(delayTime)
 
