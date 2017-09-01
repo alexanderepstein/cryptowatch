@@ -22,6 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import argparse
+
 from time import sleep
 from sys import platform
 from os import system
@@ -29,6 +30,7 @@ from os.path import exists
 
 import utils.cryptoUtils as crypto
 import utils.cwconfig as cfg
+import cryptoConsole.cryptoCurses as myCurses
 config = cfg.config()
 
 
@@ -91,13 +93,76 @@ def consoleMonitor(coinType, monitorFilePath):
         file.write("\n")
     return totalFiat
 
-def main():
+def cryptoFile(filePath):
+    if platform == "linux" or platform == "linux2" or platform == "darwin":
+        if "~" in filePath:
+            from re import sub
+            from os.path import expanduser
+            filePath = sub("~",expanduser("~"),filePath)
+    if exists(filePath):
+        answer = input("File already exists at %s, overwrite it? [Y/n] " % filePath)
+        answer = answer.lower()
+        if answer != "y" and answer != "yes":
+            exit()
+    try:
+        open(filePath, 'w+').close()
+    except IsADirectoryError:
+        print("Error: the path provided is a directory")
+        exit()
+    print("Loading...")
+    totalFiat = 0.00
+    totalFiat += consoleMonitor("ethereum", filePath)
+    totalFiat += consoleMonitor("bitcoin", filePath)
+    totalFiat += consoleMonitor("litecoin", filePath)
+    with open(filePath, 'a+') as file:
+        file.write("Total %s: %.2f\n" %(config.fiatCurrency, totalFiat))
+    clear()
+    printHeader()
+
+def printCryptoData():
     if platform == "linux" or platform == "linux2" or platform == "darwin":
         from os.path import expanduser
         home = expanduser("~")
         monitorFilePath = home + '/.cryptoConsole'
     else:
         monitorFilePath = 'C:/.cryptoConsole'
+    print("Loading...")
+    open(monitorFilePath, 'w+').close()
+    totalFiat = 0.00
+    totalFiat += consoleMonitor("ethereum", monitorFilePath)
+    totalFiat += consoleMonitor("bitcoin", monitorFilePath)
+    totalFiat += consoleMonitor("litecoin", monitorFilePath)
+    clear()
+    printHeader()
+    with open(monitorFilePath, 'a+') as file:
+        file.write("Total %s: %.2f\n" %(config.fiatCurrency, totalFiat))
+    with open(monitorFilePath, 'r') as file:
+        print(file.read())
+    open(monitorFilePath, 'w').close()
+
+def cursesLoop():
+    from curses import wrapper as wrapper
+    cryptoCurses = wrapper(myCurses.cryptoCurses)
+    etherResponse = crypto.queryCMC("ethereum")
+    bitcoinResponse = crypto.queryCMC("bitcoin")
+    litecoinResponse = crypto.queryCMC("litecoin")
+    cryptoCurses.refresh()
+    try:
+        while True:
+            etherRate, etherCrypto = cryptoCurses.fillData(etherResponse,"ethereum")
+            bitcoinRate, bitcoinCrypto = cryptoCurses.fillData(bitcoinResponse,"bitcoin")
+            litecoinRate, litecoinCrypto = cryptoCurses.fillData(litecoinResponse,"litecoin")
+            cryptoCurses.fillBalanceData(etherCrypto,etherRate,bitcoinCrypto,bitcoinRate,litecoinCrypto,litecoinRate)
+            cryptoCurses.refresh()
+            etherResponse = crypto.queryCMC("ethereum")
+            bitcoinResponse = crypto.queryCMC("bitcoin")
+            litecoinResponse = crypto.queryCMC("litecoin")
+
+    except KeyboardInterrupt:
+        cryptoCurses.destruct()
+        printHeader()
+
+def main():
     parser = argparse.ArgumentParser(prog="Cryptowatch",description='Track prices and account balances for bitcoin, ethereum, and litecoin', epilog="By: Alex Epstein https://github.com/alexanderepstein")
     parser.add_argument("-m", "--monitor",help="Choose which cryptowatch monitor to use")
     parser.add_argument("-f", "--file", default="", help="Output the current cryptowatch data to the specified file path")
@@ -109,74 +174,16 @@ def main():
     elif args.config:
         config.edit()
     elif args.file != "":
-        filePath = args.file
-        if platform == "linux" or platform == "linux2" or platform == "darwin":
-            if "~" in filePath:
-                from re import sub
-                from os.path import expanduser
-                filePath = sub("~",expanduser("~"),filePath)
-        if exists(filePath):
-            answer = input("File already exists at %s, overwrite it? [Y/n] " % filePath)
-            answer = answer.lower()
-            if answer != "y" and answer != "yes":
-                exit()
-        try:
-            open(filePath, 'w+').close()
-        except IsADirectoryError:
-            print("Error: the path provided is a directory")
-            exit()
-        print("Loading...")
-        totalFiat = 0.00
-        totalFiat += consoleMonitor("ethereum", filePath)
-        totalFiat += consoleMonitor("bitcoin", filePath)
-        totalFiat += consoleMonitor("litecoin", filePath)
-        with open(filePath, 'a+') as file:
-            file.write("Total %s: %.2f\n" %(config.fiatCurrency, totalFiat))
-        clear()
-        printHeader()
+        cryptoFile(args.file)
     elif args.monitor:
         if args.monitor == "pie" or args.monitor == "rpi":
             import cryptoPie.cryptoPie as pie
             printHeader()
             pie.main()
         elif args.monitor == "console" or args.monitor == "terminal":
-            from datetime import datetime
-            print("Loading...")
-            open(monitorFilePath, 'w+').close()
-            try:
-                while True:
-                    totalFiat = 0.00
-                    totalFiat += consoleMonitor("ethereum", monitorFilePath)
-                    totalFiat += consoleMonitor("bitcoin", monitorFilePath)
-                    totalFiat += consoleMonitor("litecoin", monitorFilePath)
-                    clear()
-                    printHeader()
-                    with open(monitorFilePath, 'a+') as file:
-                        file.write("Total %s: %.2f\n" %(config.fiatCurrency, totalFiat))
-                    with open(monitorFilePath, 'r') as file:
-                        print(file.read())
-                    print("Last Updated: %s" % datetime.now().strftime('%H:%M:%S'))
-                    print("Watching...")
-                    sleep(2)
-                    open(monitorFilePath, 'w').close()
-            except KeyboardInterrupt:
-                open(monitorFilePath, 'w').close()
-                clear()
-                printHeader()
+            cursesLoop()
         else:
             print("Error: invalid monitor type")
     else:
-            print("Loading...")
-            open(monitorFilePath, 'w+').close()
-            totalFiat = 0.00
-            totalFiat += consoleMonitor("ethereum", monitorFilePath)
-            totalFiat += consoleMonitor("bitcoin", monitorFilePath)
-            totalFiat += consoleMonitor("litecoin", monitorFilePath)
-            clear()
-            printHeader()
-            with open(monitorFilePath, 'a+') as file:
-                file.write("Total %s: %.2f\n" %(config.fiatCurrency, totalFiat))
-            with open(monitorFilePath, 'r') as file:
-                print(file.read())
-            open(monitorFilePath, 'w').close()
+        printCryptoData()
     exit()
