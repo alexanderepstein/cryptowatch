@@ -31,6 +31,7 @@ config = cfg.config()
 class cryptoCurses(object):
     def __init__(self, screen):
         self.screen = curses.initscr()
+        self.screenHeight,self.screenWidth = self.screen.getmaxyx()
         #self.screen.immedok(True)
         curses.noecho()
         curses.cbreak()
@@ -101,6 +102,11 @@ class cryptoCurses(object):
         elif box == "screen":
             self.screen.addstr(yOffset,xOffset,text)
 
+    def checkResize(self):
+        tempHeight, tempWidth = self.screen.getmaxyx()
+        if self.screenWidth != tempWidth or self.screenHeight != tempHeight:
+            self.screenHeight, self.screenWidth = self.screen.getmaxyx()
+            self.screen.clear()
 
     def destruct(self):
         curses.nocbreak()
@@ -139,7 +145,7 @@ class cryptoCurses(object):
         else:
             raise ValueError('Error: invalid coin type')
         self.center =  int(self.width/3 - self.width/15)
-        self.initialHeight = int(self.height/4)
+        self.initialHeight = int(self.height/5)
         self.textMax = self.width - self.center
         self.exchangeRate = str(round(float(crypto.parseCryptoData(response, "ER")),2))
         self.hourlyPercentage = str(crypto.parseCryptoData(response, "HP"))

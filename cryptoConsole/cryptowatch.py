@@ -31,6 +31,7 @@ from os.path import exists
 import utils.cryptoUtils as crypto
 import utils.cwconfig as cfg
 import cryptoConsole.cryptoCurses as myCurses
+
 config = cfg.config()
 
 
@@ -149,18 +150,26 @@ def cursesLoop():
     cryptoCurses.refresh()
     try:
         while True:
+            cryptoCurses.checkResize()
             etherRate, etherCrypto = cryptoCurses.fillData(etherResponse,"ethereum")
+            cryptoCurses.checkResize()
             bitcoinRate, bitcoinCrypto = cryptoCurses.fillData(bitcoinResponse,"bitcoin")
+            cryptoCurses.checkResize()
             litecoinRate, litecoinCrypto = cryptoCurses.fillData(litecoinResponse,"litecoin")
+            cryptoCurses.checkResize()
             cryptoCurses.fillBalanceData(etherCrypto,etherRate,bitcoinCrypto,bitcoinRate,litecoinCrypto,litecoinRate)
             cryptoCurses.refresh()
             etherResponse = crypto.queryCMC("ethereum")
             bitcoinResponse = crypto.queryCMC("bitcoin")
             litecoinResponse = crypto.queryCMC("litecoin")
-
     except KeyboardInterrupt:
         cryptoCurses.destruct()
         printHeader()
+    except Exception as err:
+        cryptoCurses.destruct()
+        printHeader()
+        print("Fatal error: " + err)
+        print("Report any issues to: https:github.com/alexanderepstein/cryptowatch/issues")
 
 def main():
     parser = argparse.ArgumentParser(prog="Cryptowatch",description='Track prices and account balances for bitcoin, ethereum, and litecoin', epilog="By: Alex Epstein https://github.com/alexanderepstein")
