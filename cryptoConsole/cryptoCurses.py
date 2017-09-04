@@ -116,17 +116,17 @@ class cryptoCurses(object):
     def clearScreen(self):
         self.screen.clear()
 
-    def fillBalanceData(self,etherTotal,etherRate,bitcoinTotal,bitcoinRate,litecoinTotal,litecoinRate):
+    def fillBalanceData(self,etherTotal, bitcoinTotal, litecoinTotal):
         self.height,self.width = self.ethereumBox.getmaxyx()
         self.center =  int(self.width/3 - self.width/15)
         self.initialHeight = int(self.height/5)
         self.textMax = self.width - self.center
-        self.totalFiat = str(round(float(etherRate) * float(etherTotal) + float(bitcoinRate) * float(bitcoinTotal) + float(litecoinRate) * float(litecoinTotal),2))
+        self.totalFiat = str(round(float(etherTotal) + float(bitcoinTotal) + float(litecoinTotal),2))
         self.balanceBox.clear()
         self.drawBalanceBox()
-        self.addText(textFill("ETH: " + etherTotal + "      " + config.fiatCurrency + ": " +str(round(float(etherTotal) * float(etherRate),2)) , self.textMax),"balance",self.center + 10,self.initialHeight)
-        self.addText(textFill("BTC: " + bitcoinTotal + "      " + config.fiatCurrency + ": " +str(round(float(bitcoinTotal) * float(bitcoinRate),2)) , self.textMax),"balance",self.center + 10,self.initialHeight*2)
-        self.addText(textFill("LTC: " + litecoinTotal + "      " + config.fiatCurrency + ": " +str(round(float(litecoinTotal) * float(litecoinRate),2)) , self.textMax),"balance",self.center + 10,self.initialHeight*3)
+        self.addText(textFill("ETH: " + etherTotal + "      " + config.fiatCurrency + ": " +str(round(float(etherTotal),2)) , self.textMax),"balance",self.center + 10,self.initialHeight)
+        self.addText(textFill("BTC: " + bitcoinTotal + "      " + config.fiatCurrency + ": " +str(round(float(bitcoinTotal),2)) , self.textMax),"balance",self.center + 10,self.initialHeight*2)
+        self.addText(textFill("LTC: " + litecoinTotal + "      " + config.fiatCurrency + ": " +str(round(float(litecoinTotal),2)) , self.textMax),"balance",self.center + 10,self.initialHeight*3)
         self.addText(textFill("Total " + config.fiatCurrency + ": " + self.totalFiat, self.textMax),"balance",self.center + 10,self.initialHeight*4)
 
     def fillData(self, response, box):
@@ -168,4 +168,4 @@ class cryptoCurses(object):
         self.addText(textFill("7 day: " + self.weeklyPercentage + "%   24H Volume: " + self.dailyVolume, self.textMax),box , self.center,self.initialHeight * 3)
         if self.address is not None :
             self.addText(textFill(self.cryptoTicker + ": " + self.totalCrypto + "    "  + config.fiatCurrency + ": " + self.totalFiat, self.textMax),box,self.center, self.initialHeight * 4)
-        return self.exchangeRate, self.totalCrypto
+        return self.totalFiat
