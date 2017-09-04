@@ -121,12 +121,12 @@ class cryptoCurses(object):
         self.center =  int(self.width/3 - self.width/15)
         self.initialHeight = int(self.height/5)
         self.textMax = self.width - self.center
-        self.totalFiat = str(float(etherRate) * float(etherTotal) + float(bitcoinRate) * float(bitcoinTotal) + float(litecoinRate) * float(litecoinTotal))
+        self.totalFiat = str(round(float(etherRate) * float(etherTotal) + float(bitcoinRate) * float(bitcoinTotal) + float(litecoinRate) * float(litecoinTotal),2))
         self.balanceBox.clear()
         self.drawBalanceBox()
-        self.addText(textFill("ETH: " + etherTotal + "      " + config.fiatCurrency + ": " +str(float(etherTotal) * float(etherRate)) , self.textMax),"balance",self.center,self.initialHeight)
-        self.addText(textFill("BTC: " + bitcoinTotal + "      " + config.fiatCurrency + ": " +str(float(bitcoinTotal) * float(bitcoinRate)) , self.textMax),"balance",self.center,self.initialHeight*2)
-        self.addText(textFill("LTC: " + litecoinTotal + "      " + config.fiatCurrency + ": " +str(float(litecoinTotal) * float(litecoinRate)) , self.textMax),"balance",self.center,self.initialHeight*3)
+        self.addText(textFill("ETH: " + etherTotal + "      " + config.fiatCurrency + ": " +str(round(float(etherTotal) * float(etherRate),2)) , self.textMax),"balance",self.center + 10,self.initialHeight)
+        self.addText(textFill("BTC: " + bitcoinTotal + "      " + config.fiatCurrency + ": " +str(round(float(bitcoinTotal) * float(bitcoinRate),2)) , self.textMax),"balance",self.center + 10,self.initialHeight*2)
+        self.addText(textFill("LTC: " + litecoinTotal + "      " + config.fiatCurrency + ": " +str(round(float(litecoinTotal) * float(litecoinRate),2)) , self.textMax),"balance",self.center + 10,self.initialHeight*3)
         self.addText(textFill("Total " + config.fiatCurrency + ": " + self.totalFiat, self.textMax),"balance",self.center + 10,self.initialHeight*4)
 
     def fillData(self, response, box):
@@ -153,7 +153,7 @@ class cryptoCurses(object):
         self.weeklyPercentage = str(crypto.parseCryptoData(response, "WP"))
         self.dailyVolume = str(round(float(crypto.parseCryptoData(response, "DV")),2))
         self.totalFiat = str(round(float(crypto.getTotalFiat(crypto.parseCryptoData(response, "ER"), box)),2))
-        self.totalCrypto = str(float(self.totalFiat) / float(self.exchangeRate))
+        self.totalCrypto = str(round(float(self.totalFiat) / float(self.exchangeRate),2))
         if box == "ethereum":
             self.ethereumBox.clear()
             self.drawEthereumBox()
