@@ -150,30 +150,35 @@ def consoleMonitor(coinType,response):
 
 def consoleLoop():
     from datetime import datetime
-
+    if platform == "linux" or platform == "linux2" or platform == "darwin":
+        from os.path import expanduser
+        home = expanduser("~")
+        monitorFilePath = home + '/.cryptoConsole'
+    else:
+        monitorFilePath = 'C:/.cryptoConsole'
     print("Loading...")
-    etherResponse = crypto.queryCMC("ethereum")
-    bitcoinResponse = crypto.queryCMC("bitcoin")
-    litecoinResponse = crypto.queryCMC("litecoin")
+    open(monitorFilePath, 'w+').close()
     try:
         while True:
+            totalFiat = 0.00
+            totalFiat += fileMonitor("ethereum", monitorFilePath)
+            totalFiat += fileMonitor("bitcoin", monitorFilePath)
+            totalFiat += fileMonitor("litecoin", monitorFilePath)
             clear()
             printHeader()
-            print()
-            totalFiat = 0.0
-            totalFiat += consoleMonitor("ethereum", etherResponse)
-            totalFiat += consoleMonitor("bitcoin", bitcoinResponse)
-            totalFiat += consoleMonitor("litecoin", litecoinResponse)
-            print("Total %s: %.2f\n" %(config.fiatCurrency, totalFiat))
-            print("Last Updated: " + datetime.now().strftime('%H:%M:%S'))
-            etherResponse = crypto.queryCMC("ethereum")
-            bitcoinResponse = crypto.queryCMC("bitcoin")
-            litecoinResponse = crypto.queryCMC("litecoin")
-
-
+            with open(monitorFilePath, 'a+') as file:
+                file.write("Total %s: %.2f\n" %(config.fiatCurrency, totalFiat))
+            with open(monitorFilePath, 'r') as file:
+                print(file.read())
+            print("Last Updated: %s" % datetime.now().strftime('%H:%M:%S'))
+            print("Watching...")
+            sleep(2)
+            open(monitorFilePath, 'w').close()
     except KeyboardInterrupt:
+        open(monitorFilePath, 'w').close()
         clear()
         printHeader()
+
 
 def printCryptoData():
     print("Loading...")
