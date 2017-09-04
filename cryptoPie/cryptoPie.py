@@ -107,10 +107,7 @@ def main():
     screen.enable_display()  # just in case
     screen.clear()  # just in case
     etherResponse = crypto.queryCMC("ethereum")
-    bitcoinResponse = crypto.queryCMC("bitcoin")
-    litecoinResponse = crypto.queryCMC("litecoin")
     screen.home()  # start at inital position
-
     while True:
         showCryptoStats("ethereum",etherResponse)
         bitcoinResponse = crypto.queryCMC("bitcoin")
