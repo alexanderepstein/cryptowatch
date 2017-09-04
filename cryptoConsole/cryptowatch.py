@@ -64,7 +64,7 @@ Logic:
     - Determine total crypto amount
     - Format and write the data to the monitorFilePath
 """
-def consoleMonitor(coinType, monitorFilePath):
+def fileMonitor(coinType, monitorFilePath):
     coinType = coinType.lower()
     if coinType == "ethereum":
         cryptoTicker = "ETH"
@@ -112,34 +112,81 @@ def cryptoFile(filePath):
         exit()
     print("Loading...")
     totalFiat = 0.00
-    totalFiat += consoleMonitor("ethereum", filePath)
-    totalFiat += consoleMonitor("bitcoin", filePath)
-    totalFiat += consoleMonitor("litecoin", filePath)
+    totalFiat += fileMonitor("ethereum", filePath)
+    totalFiat += fileMonitor("bitcoin", filePath)
+    totalFiat += fileMonitor("litecoin", filePath)
     with open(filePath, 'a+') as file:
         file.write("Total %s: %.2f\n" %(config.fiatCurrency, totalFiat))
     clear()
     printHeader()
 
-def printCryptoData():
-    if platform == "linux" or platform == "linux2" or platform == "darwin":
-        from os.path import expanduser
-        home = expanduser("~")
-        monitorFilePath = home + '/.cryptoConsole'
+def consoleMonitor(coinType,response):
+    coinType = coinType.lower()
+    if coinType == "ethereum":
+        cryptoTicker = "ETH"
+        address = config.etherAddress
+    elif coinType == "bitcoin":
+        cryptoTicker = "BTC"
+        address = config.bitcoinAddress
+    elif coinType == "litecoin":
+        cryptoTicker = "LTC"
+        address = config.litecoinAddress
     else:
-        monitorFilePath = 'C:/.cryptoConsole'
+        raise ValueError('Error: invalid coin type')
+    exchangeRate = float(crypto.parseCryptoData(response, "ER"))
+    hourlyPercentage = float(crypto.parseCryptoData(response, "HP"))
+    dailyPercentage = float(crypto.parseCryptoData(response, "DP"))
+    weeklyPercentage = float(crypto.parseCryptoData(response, "WP"))
+    dailyVolume = float(crypto.parseCryptoData(response, "DV"))
+    totalFiat = float(crypto.getTotalFiat(crypto.parseCryptoData(response, "ER"), coinType))
+    totalCrypto = float(totalFiat) / float(exchangeRate)
+    print("%s->%s:%.2f\n" % (cryptoTicker, config.fiatCurrency, exchangeRate))
+    print("1H: %.2f%%  24H: %.2f%%\n" % (hourlyPercentage, dailyPercentage))
+    print("7 day: %.2f%%   24H Volume: %.2f\n" % (weeklyPercentage, dailyVolume))
+    if address is not None :
+        print("%s: %.2f   %s: %.2f\n" % (cryptoTicker, totalCrypto, config.fiatCurrency, totalFiat))
+    print()
+    return totalFiat
+
+def consoleLoop():
+    from datetime import datetime
+
     print("Loading...")
-    open(monitorFilePath, 'w+').close()
-    totalFiat = 0.00
-    totalFiat += consoleMonitor("ethereum", monitorFilePath)
-    totalFiat += consoleMonitor("bitcoin", monitorFilePath)
-    totalFiat += consoleMonitor("litecoin", monitorFilePath)
+    etherResponse = crypto.queryCMC("ethereum")
+    bitcoinResponse = crypto.queryCMC("bitcoin")
+    litecoinResponse = crypto.queryCMC("litecoin")
+    try:
+        while True:
+            clear()
+            printHeader()
+            print()
+            totalFiat = 0.0
+            totalFiat += consoleMonitor("ethereum", etherResponse)
+            totalFiat += consoleMonitor("bitcoin", bitcoinResponse)
+            totalFiat += consoleMonitor("litecoin", litecoinResponse)
+            print("Total %s: %.2f\n" %(config.fiatCurrency, totalFiat))
+            print("Last Updated: " + datetime.now().strftime('%H:%M:%S'))
+            etherResponse = crypto.queryCMC("ethereum")
+            bitcoinResponse = crypto.queryCMC("bitcoin")
+            litecoinResponse = crypto.queryCMC("litecoin")
+
+
+    except KeyboardInterrupt:
+        clear()
+        printHeader()
+
+def printCryptoData():
+    print("Loading...")
+    etherResponse = crypto.queryCMC("ethereum")
+    bitcoinResponse = crypto.queryCMC("bitcoin")
+    litecoinResponse = crypto.queryCMC("litecoin")
     clear()
     printHeader()
-    with open(monitorFilePath, 'a+') as file:
-        file.write("Total %s: %.2f\n" %(config.fiatCurrency, totalFiat))
-    with open(monitorFilePath, 'r') as file:
-        print(file.read())
-    open(monitorFilePath, 'w').close()
+    totalFiat = 0.0
+    totalFiat += consoleMonitor("ethereum", etherResponse)
+    totalFiat += consoleMonitor("bitcoin", bitcoinResponse)
+    totalFiat += consoleMonitor("litecoin", litecoinResponse)
+    print("Total %s: %.2f\n" %(config.fiatCurrency, totalFiat))
 
 def cursesLoop():
     from curses import wrapper as wrapper
@@ -151,13 +198,13 @@ def cursesLoop():
     try:
         while True:
             cryptoCurses.checkResize()
-            etherRate, etherCrypto = cryptoCurses.fillData(etherResponse,"ethereum")
+            etherTotal = cryptoCurses.fillData(etherResponse,"ethereum")
             cryptoCurses.checkResize()
-            bitcoinRate, bitcoinCrypto = cryptoCurses.fillData(bitcoinResponse,"bitcoin")
+            bitcoinTotal = cryptoCurses.fillData(bitcoinResponse,"bitcoin")
             cryptoCurses.checkResize()
-            litecoinRate, litecoinCrypto = cryptoCurses.fillData(litecoinResponse,"litecoin")
+            litecoinTotal = cryptoCurses.fillData(litecoinResponse,"litecoin")
             cryptoCurses.checkResize()
-            cryptoCurses.fillBalanceData(etherCrypto,etherRate,bitcoinCrypto,bitcoinRate,litecoinCrypto,litecoinRate)
+            cryptoCurses.fillBalanceData(etherTotal,bitcoinTotal,litecoinTotal)
             cryptoCurses.refresh()
             etherResponse = crypto.queryCMC("ethereum")
             bitcoinResponse = crypto.queryCMC("bitcoin")
@@ -190,6 +237,8 @@ def main():
             printHeader()
             pie.main()
         elif args.monitor == "console" or args.monitor == "terminal":
+            consoleLoop()
+        elif args.monitor == "curses" or args.monitor == "ncurses":
             cursesLoop()
         else:
             print("Error: invalid monitor type")
