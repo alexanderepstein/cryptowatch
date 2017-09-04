@@ -13,7 +13,7 @@ DESCRIPTION = 'Track prices and account balances for bitcoin, ethereum, and lite
 URL = 'https://github.com/alexanderepstein/cryptowatch'
 EMAIL = 'epsteina@wit.edu'
 AUTHOR = 'Alexander Epstein'
-VERSION = '0.0.4'
+VERSION = '0.0.5'
 here = os.path.abspath(os.path.dirname(__file__))
 
 # Import the README and use it as the long-description.

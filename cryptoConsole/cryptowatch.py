@@ -226,7 +226,7 @@ def main():
     parser.add_argument("-v", "--version", action="store_true", help="Display the current version of cryptowatch")
     args = parser.parse_args()
     if args.version:
-        print("Cryptowatch Version 0.0.4")
+        print("Cryptowatch Version 0.0.5")
     elif args.config:
         config.edit()
     elif args.file != "":
