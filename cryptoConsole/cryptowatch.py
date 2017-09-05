@@ -220,7 +220,7 @@ def cursesLoop():
     except Exception as err:
         cryptoCurses.destruct()
         printHeader()
-        print("Fatal error: " + err)
+        print("Fatal error: " + str(err))
         print("Report any issues to: https:github.com/alexanderepstein/cryptowatch/issues")
 
 def main():
