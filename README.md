@@ -10,6 +10,14 @@
 
 </div>
 
+### Curses Monitor
+
+<div align="center">
+
+[![crypto_Curses.png](https://s26.postimg.org/smox2o1yh/crypto_Curses.png)](https://postimg.org/image/5xzq33kkl/)
+
+</div>
+
 ### Console Monitor
 
 <div align="center">
@@ -17,6 +25,7 @@
 [![cryptowatch.png](https://s26.postimg.org/53u777pu1/cryptowatch.png)](https://postimg.org/image/y68ha1c3p/) 	
 
 </div>
+
 
 ## Install
 ```bash
