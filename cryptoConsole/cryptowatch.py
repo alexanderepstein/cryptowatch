@@ -28,8 +28,8 @@ from sys import platform
 from os import system
 from os.path import exists
 
-import utils.cryptoUtils as crypto
-import utils.cwconfig as cfg
+import cryptoUtils.cryptoUtils as crypto
+import cryptoUtils.cwconfig as cfg
 import cryptoConsole.cryptoCurses as myCurses
 
 config = cfg.config()

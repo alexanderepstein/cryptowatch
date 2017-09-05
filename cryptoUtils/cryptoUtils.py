@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import utils.cwconfig as cfg
+import cryptoUtils.cwconfig as cfg
 
 
 config = cfg.config()
@@ -189,7 +189,6 @@ Logic:
     - Get total cryptocurrency balance
     - If exchange rate wasn't passed in then get it
     - Convert total cryptocurrency balance to fiat and return
-
 """
 def getTotalFiat(exchangeRate="", coinType="ethereum"):
     if coinType == "ethereum":

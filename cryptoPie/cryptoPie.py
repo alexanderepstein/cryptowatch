@@ -25,8 +25,8 @@
 
 import time
 
-import utils.cryptoUtils as crypto
-import utils.cwconfig as cfg
+import cryptoUtils.cryptoUtils as crypto
+import cryptoUtils.cwconfig as cfg
 import cryptoPie.Adafruit_CharLCD
 
 config = cfg.config()
