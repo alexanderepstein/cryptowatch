@@ -230,6 +230,9 @@ def main():
     parser.add_argument("-c", "--config", action = "store_true", help="Edit the config file for cryptowatch")
     parser.add_argument("-v", "--version", action="store_true", help="Display the current version of cryptowatch")
     args = parser.parse_args()
+    if (args.version or args.config or args.file or args.monitor) and not (bool(args.version) ^ bool(args.config) ^ bool(args.monitor) ^ bool(args.file != "")):
+        print("Error: all options for cryptowatch are mutually exclusive")
+        exit()
     if args.version:
         print("Cryptowatch Version 0.0.5")
     elif args.config:
