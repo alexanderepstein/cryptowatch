@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import codecs
 import os
 import sys
 
@@ -18,13 +17,8 @@ here = os.path.abspath(os.path.dirname(__file__))
 
 # Import the README and use it as the long-description.
 readme_file = os.path.join(here, 'README.md')
-try:
-    from m2r import parse_from_file
-    long_description = parse_from_file(readme_file)
-except ImportError:
-    # m2r may not be installed in user environment
-    with open(readme_file) as f:
-        long_description = f.read()
+with open(readme_file) as f:
+    long_description = f.read()
 
 # What packages are required for this module to be executed?
 required = [
