@@ -62,18 +62,20 @@ def scrollRight():
 def showCryptoStats(coinType="ethereum",response):
     coinType = coinType.lower()
     if coinType == "ethereum":
-        cryptoTicker = "ETH"        scrollRight()
+        cryptoTicker = "ETH"
+        address = config.etherAddress
         screen.clear()
         screen.home()
-        address = config.etherAddress
     elif coinType == "bitcoin":
         cryptoTicker = "BTC"
-        address = config.bitcoinAddress        scrollRight()
+        address = config.bitcoinAddress
         screen.clear()
         screen.home()
     elif coinType == "litecoin":
         cryptoTicker = "LTC"
         address = config.litecoinAddress
+        screen.clear()
+        screen.home()
     else:
         raise ValueError('Error: invalid coin type')
     exchangeRate = crypto.parseCryptoData(response, "ER")
@@ -114,7 +116,7 @@ def main():
         scrollRight()
         screen.clear()
         screen.home()
-        showCryptoStats("bitcoin"bitcoinResponse)
+        showCryptoStats("bitcoin",bitcoinResponse)
         litecoinResponse = crypto.queryCMC("litecoin")
         scrollRight()
         screen.clear()

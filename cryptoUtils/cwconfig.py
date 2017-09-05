@@ -77,6 +77,8 @@ class config(object):
         self.db5 = configParser.get('cryptoPie-config', 'db5')
         self.db6 = configParser.get('cryptoPie-config', 'db6')
         self.db7 = configParser.get('cryptoPie-config', 'db7')
+        self.cols = configParser.get('cryptoPie-config', 'cols')
+        self.rows = configParser.get('cryptoPie-config', 'rows')
         pass
 
     def edit(self):

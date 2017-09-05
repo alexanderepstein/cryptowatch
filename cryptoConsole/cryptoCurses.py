@@ -23,8 +23,8 @@
 # SOFTWARE.
 import curses
 from textwrap import fill as textFill
-from utils import cryptoUtils as crypto
-from utils import cwconfig as cfg
+from cryptoUtils import cryptoUtils as crypto
+from cryptoUtils import cwconfig as cfg
 
 config = cfg.config()
 
