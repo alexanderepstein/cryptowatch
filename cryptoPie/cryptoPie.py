@@ -27,26 +27,26 @@ import time
 
 import cryptoUtils.cryptoUtils as crypto
 import cryptoUtils.cwconfig as cfg
-import cryptoPie.Adafruit_CharLCD
+import cryptoPie.Adafruit_CharLCD as Char_LCD
 
 config = cfg.config()
 
-registerSelect = config.registerSelect
-enable = config.enable
-db4 = config.db4
-db5 = config.db5
-db6 = config.db6
-db7 = config.db7
+registerSelect = int(config.registerSelect)
+enable = int(config.enable)
+db4 = int(config.db4)
+db5 = int(config.db5)
+db6 = int(config.db6)
+db7 = int(config.db7)
 
 # Screen Size
-cols = config.cols
-rows = config.rows
-screen = Adafruit_CharLCD.Adafruit_CharLCD(registerSelect,enable,db4,db5,db6,db7,cols,rows) # initializing the screen
+cols = int(config.cols)
+rows = int(config.rows)
+screen = Char_LCD.Adafruit_CharLCD(registerSelect,enable,db4,db5,db6,db7,cols,rows) # initializing the screen
 delayTime = 10
 waitTime = 500
 
 
-def sleepMicroseconds(self, microseconds):
+def sleepMicroseconds(microseconds):
     # Busy wait in loop because delays are generally very short (few microseconds).
     end = time.time() + (microseconds / 1000000.0)
     while time.time() < end:
@@ -83,13 +83,13 @@ def showCryptoStats(coinType="ethereum",response):
     dailyPercentage = crypto.parseCryptoData(response, "DP")
     totalFiat = crypto.getTotalFiat(crypto.parseCryptoData(response, "ER"), coinType)
     totalCrypto = float(totalFiat) / float(exchangeRate)
-    screen.message("%s->%s:%.2f" % (cryptoTicker, config.fiatCurrency, exchangeRate))
+    screen.message("%s->%s:%.2f" % (cryptoTicker, config.fiatCurrency, float(exchangeRate)))
     screen.set_cursor(2, 1)
-    if len("1H: %.2f  24H: %.2f" % (hourlyPercentage, dailyPercentage)) <= cols:
-        screen.message("1H: %.2f  24H: %.2f" % (hourlyPercentage, dailyPercentage))
+    if len("1H: %.2f  24H: %.2f" % (float(hourlyPercentage), float(dailyPercentage))) <= cols:
+        screen.message("1H: %.2f  24H: %.2f" % (float(hourlyPercentage), float(dailyPercentage)))
     else:
-        if len("1H: %.2f " % hourlyPercentage) <= cols:
-            screen.message("1H: %.2f " % hourlyPercentage)
+        if len("1H: %.2f " % float(hourlyPercentage)) <= cols:
+            screen.message("1H: %.2f " % float(hourlyPercentage))
         else:
             screen.message("1H: Daaayum")
     sleepMicroseconds(waitTime)
@@ -97,9 +97,9 @@ def showCryptoStats(coinType="ethereum",response):
         scrollRight()
         screen.clear()
         screen.home()
-        screen.message("%s: %.2f" % (cryptoTicker, totalCrypto))
+        screen.message("%s: %.2f" % (cryptoTicker, float(totalCrypto)))
         screen.set_cursor(2, 1)
-        screen.message("%s: %.2f" % (config.fiatCurrency, totalFiat))
+        screen.message("%s: %.2f" % (config.fiatCurrency, float(totalFiat)))
         sleepMicroseconds(waitTime)
     sleepMicroseconds(delayTime)
 
