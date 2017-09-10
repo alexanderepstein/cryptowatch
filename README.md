@@ -48,6 +48,22 @@ optional arguments:
   -v, --version         Display the current version of cryptowatch
 ```
 
+##### Curses Monitor ```cryptowatch --monitor curses```
+
+##### Terminal Monitor ```cryptowatch --monitor terminal```
+
+##### Print Information To Terminal Once ```cryptowatch```
+
+##### Output information to a file ```cryptowatch -f desiredFilePath```
+
+##### Edit the config file ```cryptowatch --config```
+
+## Programmatic Usage
+
+#### [CryptoUtils Documentation](https://github.com/alexanderepstein/cryptowatch/blob/master/cryptoUtils/README.md)
+
+#### [CryptoPie Documentation](https://github.com/alexanderepstein/cryptowatch/blob/master/cryptoPie/README.md)
+
 ## Donate
 If this project helped you in any way and you feel like supporting me
 
