@@ -59,7 +59,7 @@ def scrollRight():
         sleepMicroseconds(delayTime)
 
 
-def showCryptoStats(coinType="ethereum",response):
+def showCryptoStats(coinType,response):
     coinType = coinType.lower()
     if coinType == "ethereum":
         cryptoTicker = "ETH"
