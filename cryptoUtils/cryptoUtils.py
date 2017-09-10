@@ -195,19 +195,19 @@ def getTotalFiat(exchangeRate="", coinType="ethereum"):
         totalEther = getTotalEther()
         if exchangeRate == "":
             response = queryCMC("ethereum")
-            exchangeRate = getCryptoData(response, "ER")
+            exchangeRate = parseCryptoData(response, "ER")
         return float(totalEther) * float(exchangeRate)
     elif coinType == "bitcoin":
         totalBitcoin = getTotalBitcoin()
         if exchangeRate == "":
             response = queryCMC("bitcoin")
-            exchangeRate = getCryptoData(response, "ER")
+            exchangeRate = parseCryptoData(response, "ER")
         return float(totalBitcoin) * float(exchangeRate)
     elif coinType == "litecoin":
         totalLitecoin = getTotalLitecoin()
         if exchangeRate == "":
             response = queryCMC("litecoin")
-            exchangeRate = getCryptoData(response, "ER")
+            exchangeRate = parseCryptoData(response, "ER")
         return float(totalLitecoin) * float(exchangeRate)
     else:
         raise ValueError("Error: invalid coin type")
