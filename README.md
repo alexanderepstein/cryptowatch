@@ -6,7 +6,7 @@
 #### Use either the terminal or Raspberry Pi LCD for monitoring
 
 ![PythonVer](https://img.shields.io/pypi/pyversions/cryptowatch.svg)
-[![PyPI](https://img.shields.io/pypi/v/cryptowatch.svg)](https://pypi.python.org/pypi/cryptowatch) ![platform](https://img.shields.io/badge/platform-OSX%2C%20Linux%20%26%20Windows-blue.svg) [![license](https://img.shields.io/github/license/mashape/apistatus.svg?style=plastic)]()
+[![PyPI](https://img.shields.io/pypi/v/cryptowatch.svg)](https://pypi.python.org/pypi/cryptowatch) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/7d2ec7a555ef4534bbf42150f87ccb5d)](https://www.codacy.com/app/alexanderepstein/cryptowatch?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=alexanderepstein/cryptowatch&amp;utm_campaign=Badge_Grade) ![platform](https://img.shields.io/badge/platform-OSX%2C%20Linux%20%26%20Windows-blue.svg) [![license](https://img.shields.io/github/license/mashape/apistatus.svg?style=plastic)]()
 
 </div>
 
