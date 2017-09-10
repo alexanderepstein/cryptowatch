@@ -29,7 +29,7 @@ while [ ! -f dist/cryptowatch-$version-py3-none-any.whl ];do
   echo -n "."
   sleep .5
 done
-echo "Success!"
+echo -e "Success!\n"
 
 
 echo -n "Uploading wheel to PyPi..."

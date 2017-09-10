@@ -12,14 +12,15 @@ DESCRIPTION = 'Track prices and account balances for bitcoin, ethereum, and lite
 URL = 'https://github.com/alexanderepstein/cryptowatch'
 EMAIL = 'epsteina@wit.edu'
 AUTHOR = 'Alexander Epstein'
-VERSION = '0.0.5'
+VERSION = '0.0.6'
 here = os.path.abspath(os.path.dirname(__file__))
 
-# Import the README and use it as the long-description.
+"""# Import the README and use it as the long-description.
 readme_file = os.path.join(here, 'README.md')
 with open(readme_file) as f:
     long_description = f.read()
-
+"""
+long_description = "For information on this package refer to the github: https://github.com/alexanderepstein/cryptowatch"
 # What packages are required for this module to be executed?
 required = [
      'requests', 'Adafruit_GPIO'
