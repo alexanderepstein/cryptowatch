@@ -64,6 +64,14 @@ optional arguments:
 
 #### [CryptoPie Documentation](https://github.com/alexanderepstein/cryptowatch/blob/master/cryptoPie/README.md)
 
+## Dependencies
+  * Python 3
+  * requests
+  * Adafruit-GPIO
+
+## Todo
+  - [ ] Bokeh server for local web monitor (graph historical and realtime data)
+
 ## Donate
 If this project helped you in any way and you feel like supporting me
 

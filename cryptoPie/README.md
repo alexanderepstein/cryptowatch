@@ -4,6 +4,8 @@
 ## Circuit
 The code for cryptoPie is based around a 16x2 LCD screen.
 
+My screen broke just before I went to test this... so let me know of any issues and I will look to test myself when a new screen comes in.
+
 However by setting the size of screen in ```cryptowatch --config``` should allow you to use other screen size as well with no trouble at all.
 
 I am using a Raspberry Pi 2 Model B V1.1.
