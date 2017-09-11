@@ -2,6 +2,8 @@
 
 # Cryptowatch
 
+<img src="https://images.duckduckgo.com/iu/?u=http%3A%2F%2Fsogilis.com%2Fwp-content%2Fuploads%2F2016%2F05%2FIllustration_Sogilis_droite_print.png&f=1" height="300px" width="300px">
+
 #### Monitor prices and account balaces for bitcoin, ethereum, and litecoin
 #### Use either the terminal or Raspberry Pi LCD for monitoring
 
@@ -71,6 +73,10 @@ optional arguments:
 
 ## Todo
   - [ ] Bokeh server for local web monitor (graph historical and realtime data)
+  - [ ] Support more cryptocurrencies
+  - [ ] Change the style of the terminal & curses monitor to support viewing more currencies (possibly even scrolling with the curses monitor)
+  - [ ] Add LED to to cryptoPie for positive or negative 24H change
+  - [ ] Grab historical data and add option to create graph and output to file or view (matplotlib or gnuplot)
 
 ## Donate
 If this project helped you in any way and you feel like supporting me
