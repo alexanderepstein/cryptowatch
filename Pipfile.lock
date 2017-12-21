@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "819d8fd2db3829854ff4c1a3c34a44824d51f49e1a7e870cda67d71d84971428"
+            "sha256": "d9ad37696a04ced7fb40dd52d1d56da5c13716caacfe4b510c1539cf37c16230"
         },
         "requires": {},
         "sources": [
@@ -12,14 +12,21 @@
         ]
     },
     "default": {
-        "adafruit-gpio": "==1.0.3",
-        "adafruit-pureio": "==0.2.1",
-        "certifi": "==2017.7.27.1",
-        "chardet": "==3.0.4",
-        "idna": "==2.6",
-        "requests": "==2.18.4",
-        "spidev": "==3.2",
-        "urllib3": "==1.22"
+        "adafruit-gpio": {
+            "version": "==1.0.3"
+        },
+        "adafruit-pureio": {
+            "version": "==0.2.1"
+        },
+        "certifi": {
+            "version": "==2017.7.27.1"
+        },
+        "chardet": {
+            "version": "==3.0.4"
+        },
+        "spidev": {
+            "version": "==3.2"
+        }
     },
     "develop": {}
 }

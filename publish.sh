@@ -22,7 +22,7 @@
 # SOFTWARE.
 
 echo -n "Packaging cryptowatch into wheel.."
-version=$(cryptowatch --version | grep -Eo "[0-9.]*")
+version=$(cat __version__.py | grep -Eo "[0-9.]*" | grep -v "^[.]")
 python3 setup.py bdist_wheel --python-tag=py3 > /dev/null || echo "Failure!" &
 
 while [ ! -f dist/cryptowatch-$version-py3-none-any.whl ];do
