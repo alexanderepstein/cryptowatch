@@ -64,25 +64,24 @@ def showCryptoStats(coinType,response):
     if coinType == "ethereum":
         cryptoTicker = "ETH"
         address = config.etherAddress
-        screen.clear()
-        screen.home()
     elif coinType == "bitcoin":
         cryptoTicker = "BTC"
         address = config.bitcoinAddress
-        screen.clear()
-        screen.home()
     elif coinType == "litecoin":
         cryptoTicker = "LTC"
         address = config.litecoinAddress
-        screen.clear()
-        screen.home()
     else:
         raise ValueError('Error: invalid coin type')
-    exchangeRate = crypto.parseCryptoData(response, "ER")
-    hourlyPercentage = crypto.parseCryptoData(response, "HP")
-    dailyPercentage = crypto.parseCryptoData(response, "DP")
-    totalFiat = crypto.getTotalFiat(crypto.parseCryptoData(response, "ER"), coinType)
-    totalCrypto = float(totalFiat) / float(exchangeRate)
+    screen.home()
+    metrics = crypto.getCryptoData(coinType)
+    exchangeRate = metrics[0]
+    hourlyPercentage = metrics[4]
+    dailyPercentage = metrics[3]
+    totalFiat = metrics[-1]
+    totalCrypto = metrics[-2]
+    scrollRight()
+    screen.clear()
+    screen.home()
     screen.message("%s->%s:%.2f" % (cryptoTicker, config.fiatCurrency, float(exchangeRate)))
     screen.set_cursor(2, 1)
     if len("1H: %.2f  24H: %.2f" % (float(hourlyPercentage), float(dailyPercentage))) <= cols:
@@ -108,21 +107,8 @@ def showCryptoStats(coinType,response):
 def main():
     screen.enable_display()  # just in case
     screen.clear()  # just in case
-    etherResponse = crypto.queryCMC("ethereum")
     screen.home()  # start at inital position
     while True:
-        showCryptoStats("ethereum",etherResponse)
-        bitcoinResponse = crypto.queryCMC("bitcoin")
-        scrollRight()
-        screen.clear()
-        screen.home()
-        showCryptoStats("bitcoin",bitcoinResponse)
-        litecoinResponse = crypto.queryCMC("litecoin")
-        scrollRight()
-        screen.clear()
-        screen.home()
-        showCryptoStats("litecoin",litecoinResponse)
-        etherResponse = crypto.queryCMC("ethereum")
-        scrollRight()
-        screen.clear()
-        screen.home()
+        showCryptoStats("bitcoin")
+        showCryptoStats("ethereum")
+        showCryptoStats("litecoin")
