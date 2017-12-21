@@ -130,8 +130,8 @@ Logic:
     - Print all available information to the console
 """
 
-def printCryptoData():
-    header = ["Coin Type","Price " + config.fiatCurrency, "24h Volume", "7d % Change", "24h % Change", "1h % Change", "Total Crypto Balance", "Total Fiat " + config.fiatCurrency]
+def getCryptoData(clearConsole=False):
+    header = ["Coin Type","Price " + config.fiatCurrency, "24h Volume", "7d % Change", "24h % Change", "1h % Change", "Total Crypto Balance", "Total " + config.fiatCurrency]
     #coinTypes = ["Bitcoin", "Ethereum", "Litecoin"]
     metrics = []
     bitcoinMetrics = getCryptoInfo("bitcoin")
@@ -146,6 +146,7 @@ def printCryptoData():
     metrics.append(ethereumMetrics)
     metrics.append(litecoinMetrics)
     table = AsciiTable(metrics)
-    clear()
-    print(table.table)
-    print("                Total %s: %.2f                              Last Updated: %s" % (config.fiatCurrency, totalFiat, str(datetime.now())))
+    footer = "Last Updated: %s \t\t\t\t\t\t\t\tTotal %s: %.2f" % (str(datetime.now()), config.fiatCurrency, totalFiat)
+    if clearConsole:
+        clear()
+    return table.table + "\n" + footer

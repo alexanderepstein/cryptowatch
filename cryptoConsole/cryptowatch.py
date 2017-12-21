@@ -24,22 +24,18 @@
 import argparse
 
 from time import sleep
-from sys import platform
-from os import system
 from os.path import exists
+from sys import platform
+from re import sub
+from os.path import expanduser
 
-from cryptoUtils.cryptoUtils import printCryptoData
+
+from cryptoUtils.cryptoUtils import clear
+from cryptoUtils.cryptoUtils import getCryptoData
 import cryptoUtils.cwconfig as cfg
 
 
 config = cfg.config()
-
-def clear():
-    if platform == "linux" or platform == "linux2" or platform == "darwin":
-        system("clear")
-    elif platform == "win32":
-        system("cls")
-
 
 def printHeader():
     print('_________                        __                         __         .__')
@@ -48,22 +44,21 @@ def printHeader():
     print('\     \____|  | \/\___  ||  |_> >  | (  <_> )     /  / __ \|  | \  \___|   Y  \\')
     print('\______  /|__|   / ____||   __/|__|   \____/ \/\_/  (____  /__|  \___  >___|  /')
     print('       \/        \/     |__|                             \/          \/     \/')
-    print("Created by: Alex Epstein https://github.com/alexanderepstein")
+    print("         Created by: Alex Epstein https://github.com/alexanderepstein")
 
 def cryptoFile(filePath):
-    if platform == "linux" or platform == "linux2" or platform == "darwin":
+    if platform in ["linux", "linux2", "darwin"]:
         if "~" in filePath:
-            from re import sub
-            from os.path import expanduser
             filePath = sub("~", expanduser("~"), filePath)
     if exists(filePath):
         answer = input("File already exists at %s, overwrite it? [Y/n] " % filePath)
         answer = answer.lower()
-        if answer is not "y" and answer is not "yes":
+        if answer != 'y' and answer != "yes":
             exit()
     try:
         with open(filePath, 'w+') as file:
-            file.write(printCryptoData())
+            data = getCryptoData()
+            file.write(data)
     except IsADirectoryError:
         print("Error: the path provided is a directory")
         exit()
@@ -73,7 +68,7 @@ def cryptoFile(filePath):
 def consoleLoop():
     try:
         while True:
-            printCryptoData()
+            print(getCryptoData(True))
             sleep(30)
     except KeyboardInterrupt:
         clear()
@@ -105,4 +100,4 @@ def main():
         else:
             print("Error: invalid monitor type")
     else:
-        printCryptoData()
+        print(getCryptoData())
