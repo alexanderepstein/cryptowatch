@@ -54,12 +54,12 @@ def sleepMicroseconds(microseconds):
 
 
 def scrollRight():
-    for x in range(cols):
+    for _ in range(cols):
         screen.move_right()
         sleepMicroseconds(delayTime)
 
 
-def showCryptoStats(coinType,response):
+def showCryptoStats(coinType):
     coinType = coinType.lower()
     if coinType == "ethereum":
         cryptoTicker = "ETH"
@@ -105,10 +105,13 @@ def showCryptoStats(coinType,response):
 
 
 def main():
-    screen.enable_display()  # just in case
+    screen.enable_display(True)  # just in case
     screen.clear()  # just in case
     screen.home()  # start at inital position
     while True:
         showCryptoStats("bitcoin")
         showCryptoStats("ethereum")
         showCryptoStats("litecoin")
+    except KeyboardInterrupt:
+        screen.clear()
+        screen.enable_display(False)

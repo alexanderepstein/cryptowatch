@@ -21,6 +21,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+
 import json
 from datetime import datetime
 from sys import platform
@@ -54,23 +55,35 @@ def request(url):
                         response.status_code)
     return response.text
 
+
+"""
+Output: Clears the terminal
+Logic:
+    - We just want to know how to clear the terminal
+    - Check the platform type
+    - Clear the terminal in the right way
+"""
 def clear():
     if platform == "linux" or platform == "linux2" or platform == "darwin":
         system("clear")
     elif platform == "win32":
         system("cls")
+    else:
+        print("Uh-oh you are using an unsported system :/")
 
 
 """
-Output: Total ether across all addresses in the config class
+Output: Total crypto across all addresses in the config class
+Parameters:
+    - Cointype: Which coin do you want the total crypto for
 Logic:
+    - Start with 0 total crypto
     - For every address
-        - Request etherscan for balance
-        - Add this balance to the total ether
-    - Return the total ether
+        - Request respective api for balance
+        - Add this balance to the total crypto
+    - Return the total crypto
 """
 def getTotalCrypto(coinType):
-    import json
     totalCrypto = 0.0
     if coinType is "bitcoin":
         for address in config.bitcoinAddress:
@@ -94,11 +107,14 @@ def getTotalCrypto(coinType):
 
 
 """
-Output: JSON response from coinmarketcap for information on specific cryptocurrency
-Parameter cointype: query coinmarketcap about this specified cointype
+Output: Array of metrics related to the respective coin type
+Parameters
+    - Cointype: query coinmarketcap about this specified cointype
 Logic:
     - Request info from coinmarket cap
-    - Ready the response for JSON parsing and return
+    - Ready the response for JSON parsing
+    - Parse the response and append each peice of info to the metrics array
+    - Return the metrics array
 """
 def getCryptoInfo(coinType):
     metrics = []
@@ -119,17 +135,18 @@ def getCryptoInfo(coinType):
 
 
 """
-Output: Print all available data about a specific cryptocurrency and the respective config addresses
-Parameter: Coin type to print data on
+Output: Returns an ascii table for all cryptocurrencies and their data
+Parameters:
+    - clearConsole: Do we want to clear the console before returning this data (we do want to do this when running in monitor mode)
 Logic:
-    - Check valid coinType
-    - Query coinmarketcap about coinType
-    - Get the exchangeRate
-    - Get the totalFiat using exchangeRate
-    - Get the totalCrypto using exchangeRate and totalFiat
-    - Print all available information to the console
+    - Create header
+    - Get metrics on each legal currency and insert into their own array
+    - Get the total fiat by adding the last index of each metrics array together
+    - Insert cointypes into the respective array
+    - Combine the header and the crypoto metrics into one big metrics array
+    - Create the ascii table from this data
+    -
 """
-
 def getCryptoData(clearConsole=False):
     header = ["Coin Type","Price " + config.fiatCurrency, "24h Volume", "7d % Change", "24h % Change", "1h % Change", "Total Crypto Balance", "Total " + config.fiatCurrency]
     #coinTypes = ["Bitcoin", "Ethereum", "Litecoin"]
