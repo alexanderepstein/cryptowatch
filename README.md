@@ -61,6 +61,8 @@ optional arguments:
   * Python 3
   * requests
   * Adafruit-GPIO
+  * terminaltables
+  * colorclass
 
 ## Todo
   - [x] Change from curses interface to a table
