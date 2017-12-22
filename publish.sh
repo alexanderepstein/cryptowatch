@@ -23,7 +23,7 @@
 
 echo -n "Packaging cryptowatch into wheel.."
 version=$(cat __version__.py | grep -Eo "[0-9.]*" | grep -v "^[.]")
-python3 setup.py bdist_wheel --python-tag=py3 > /dev/null || echo "Failure!" &
+python3 setup.py bdist_wheel --python-tag=py3 > /dev/null || { echo "Failure!"; exit 1; } &
 
 while [ ! -f dist/cryptowatch-$version-py3-none-any.whl ];do
   echo -n "."
@@ -33,5 +33,5 @@ echo -e "Success!\n"
 
 
 echo -n "Uploading wheel to PyPi..."
-twine upload dist/cryptowatch-$version-py3-none-any.whl > /dev/null || echo "Failure!"
+twine upload dist/cryptowatch-$version-py3-none-any.whl > /dev/null || { echo "Failure!"; exit 1; }
 echo "Success!"
