@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "d9ad37696a04ced7fb40dd52d1d56da5c13716caacfe4b510c1539cf37c16230"
+            "sha256": "09d2cc5975a0c4ba3eb99f9a0f3d615d17547ba2bbecdd7647cdfe572eafb715"
         },
         "requires": {},
         "sources": [
@@ -19,13 +19,52 @@
             "version": "==0.2.1"
         },
         "certifi": {
-            "version": "==2017.7.27.1"
+            "version": "==2017.11.5"
         },
         "chardet": {
             "version": "==3.0.4"
         },
+        "colorclass": {
+            "version": "==2.2.0"
+        },
+        "decorator": {
+            "version": "==4.1.2"
+        },
+        "idna": {
+            "version": "==2.6"
+        },
+        "ipython-genutils": {
+            "version": "==0.2.0"
+        },
+        "jsonschema": {
+            "version": "==2.6.0"
+        },
+        "jupyter-core": {
+            "version": "==4.4.0"
+        },
+        "nbformat": {
+            "version": "==4.4.0"
+        },
+        "pytz": {
+            "version": "==2017.3"
+        },
+        "requests": {
+            "version": "==2.18.4"
+        },
+        "six": {
+            "version": "==1.11.0"
+        },
         "spidev": {
             "version": "==3.2"
+        },
+        "terminaltables": {
+            "version": "==3.1.0"
+        },
+        "traitlets": {
+            "version": "==4.3.2"
+        },
+        "urllib3": {
+            "version": "==1.22"
         }
     },
     "develop": {}
