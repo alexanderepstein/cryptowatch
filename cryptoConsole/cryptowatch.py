@@ -57,7 +57,7 @@ def cryptoFile(filePath):
             exit()
     try:
         with open(filePath, 'w+') as file:
-            data = getCryptoData()
+            data = getCryptoData(False, False)
             file.write(data)
     except IsADirectoryError:
         print("Error: the path provided is a directory")

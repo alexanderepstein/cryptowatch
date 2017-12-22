@@ -28,6 +28,10 @@ from sys import platform
 from os import system
 
 try:
+    from colorclass import Color
+except ImportError:
+    raise ImportError("Error: no colorclass module found, install it with pip")
+try:
     import requests
 except ImportError:
     raise ImportError("Error: no requests module found, install it with pip")
@@ -116,21 +120,40 @@ Logic:
     - Parse the response and append each peice of info to the metrics array
     - Return the metrics array
 """
-def getCryptoInfo(coinType):
+def getCryptoInfo(coinType, colored=False):
     metrics = []
     coinTypes = ["bitcoin", "ethereum", "litecoin"]
     if coinType not in coinTypes:
         raise ValueError("Invalid coinType")
     url = "https://api.coinmarketcap.com/v1/ticker/" + coinType + "/?convert=" + config.fiatCurrency
     response = json.loads(request(url))
-    metrics.append(response[0]['price_' + config.fiatCurrency.lower()])
-    metrics.append(response[0]['24h_volume_' + config.fiatCurrency.lower()])
-    metrics.append(response[0]['percent_change_7d'])
-    metrics.append(response[0]['percent_change_24h'])
-    metrics.append(response[0]['percent_change_1h'])
     totalCrypto = getTotalCrypto(coinType)
-    metrics.append(totalCrypto)
-    metrics.append(totalCrypto*float(response[0]['price_' + config.fiatCurrency.lower()]))
+    if not colored:
+        metrics.append(response[0]['price_' + config.fiatCurrency.lower()])
+        metrics.append(response[0]['24h_volume_' + config.fiatCurrency.lower()])
+        metrics.append(response[0]['percent_change_7d'])
+        metrics.append(response[0]['percent_change_24h'])
+        metrics.append(response[0]['percent_change_1h'])
+        metrics.append(totalCrypto)
+        metrics.append(totalCrypto*float(response[0]['price_' + config.fiatCurrency.lower()]))
+    else:
+        metrics.append(Color("{autogreen}" + response[0]['price_' + config.fiatCurrency.lower()] + "{/autogreen}"))
+        metrics.append(Color("{autogreen}" + response[0]['24h_volume_' + config.fiatCurrency.lower()] + "{/autogreen}"))
+        if float(response[0]['percent_change_7d']) >= 0:
+            metrics.append(Color("{autogreen}" + response[0]['percent_change_7d'] + "{/autogreen}"))
+        else:
+            metrics.append(Color("{autored}" + response[0]['percent_change_7d'] + "{/autored}"))
+        if float(response[0]['percent_change_24h']) >= 0:
+            metrics.append(Color("{autogreen}" + response[0]['percent_change_24h'] + "{/autogreen}"))
+        else:
+            metrics.append(Color("{autored}" + response[0]['percent_change_24h'] + "{/autored}"))
+        if float(response[0]['percent_change_1h']) >= 0:
+            metrics.append(Color("{autogreen}" + response[0]['percent_change_1h'] + "{/autogreen}"))
+        else:
+            metrics.append(Color("{autored}" + response[0]['percent_change_1h'] + "{/autored}"))
+        metrics.append(Color("{autocyan}" + str(totalCrypto) + "{/autocyan}"))
+        metrics.append(float(totalCrypto)*float(response[0]['price_' + config.fiatCurrency.lower()]))
+
     return metrics
 
 
@@ -147,23 +170,36 @@ Logic:
     - Create the ascii table from this data
     -
 """
-def getCryptoData(clearConsole=False):
-    header = ["Coin Type","Price " + config.fiatCurrency, "24h Volume", "7d % Change", "24h % Change", "1h % Change", "Total Crypto Balance", "Total " + config.fiatCurrency]
-    #coinTypes = ["Bitcoin", "Ethereum", "Litecoin"]
-    metrics = []
-    bitcoinMetrics = getCryptoInfo("bitcoin")
-    ethereumMetrics = getCryptoInfo("ethereum")
-    litecoinMetrics = getCryptoInfo("litecoin")
-    totalFiat = bitcoinMetrics[-1] + ethereumMetrics[-1] + litecoinMetrics[-1]
-    bitcoinMetrics.insert(0, "Bitcoin")
-    ethereumMetrics.insert(0, "Ethereum")
-    litecoinMetrics.insert(0, "Litecoin")
+def getCryptoData(clearConsole=False, colored=True):
+    if colored:
+        header = [Color("{automagenta}Coin Type{/automagenta}"), Color("{automagenta}Price " + config.fiatCurrency+"{/automagenta}"),
+        Color("{automagenta}24h Volume{/automagenta}"), Color("{automagenta}7d % Change{/automagenta}"), Color("{automagenta}24h % Change{/automagenta}"),
+        Color("{automagenta}1h % Change{/automagenta}"), Color("{automagenta}Total Crypto Balance{/automagenta}"), Color("{automagenta}Total " + config.fiatCurrency + "{/automagenta}")]
+        metrics = []
+        bitcoinMetrics = getCryptoInfo("bitcoin", colored)
+        ethereumMetrics = getCryptoInfo("ethereum", colored)
+        litecoinMetrics = getCryptoInfo("litecoin", colored)
+        totalFiat = bitcoinMetrics[-1] + ethereumMetrics[-1] + litecoinMetrics[-1]
+        bitcoinMetrics.insert(0, Color("{autocyan}Bitcoin{/autocyan}"))
+        ethereumMetrics.insert(0, Color("{autocyan}Ethereum{/autocyan}"))
+        litecoinMetrics.insert(0, Color("{autocyan}Litecoin{/autocyan}"))
+        footer = Color("{automagenta}Last Updated: %s{/automagenta} \t\t\t\t\t\t\t\t{autogreen}Total %s: %.2f{/autogreen}" % (str(datetime.now()), config.fiatCurrency, totalFiat))
+    else:
+        header = ["Coin Type","Price " + config.fiatCurrency, "24h Volume", "7d % Change", "24h % Change", "1h % Change", "Total Crypto Balance", "Total " + config.fiatCurrency]
+        metrics = []
+        bitcoinMetrics = getCryptoInfo("bitcoin")
+        ethereumMetrics = getCryptoInfo("ethereum")
+        litecoinMetrics = getCryptoInfo("litecoin")
+        totalFiat = bitcoinMetrics[-1] + ethereumMetrics[-1] + litecoinMetrics[-1]
+        bitcoinMetrics.insert(0, "Bitcoin")
+        ethereumMetrics.insert(0, "Ethereum")
+        litecoinMetrics.insert(0, "Litecoin")
+        footer = "Last Updated: %s \t\t\t\t\t\t\t\tTotal %s: %.2f" % (str(datetime.now()), config.fiatCurrency, totalFiat) 
     metrics.append(header)
     metrics.append(bitcoinMetrics)
     metrics.append(ethereumMetrics)
     metrics.append(litecoinMetrics)
     table = AsciiTable(metrics)
-    footer = "Last Updated: %s \t\t\t\t\t\t\t\tTotal %s: %.2f" % (str(datetime.now()), config.fiatCurrency, totalFiat)
     if clearConsole:
         clear()
     return table.table + "\n" + footer
