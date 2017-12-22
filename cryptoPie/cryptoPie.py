@@ -73,7 +73,7 @@ def showCryptoStats(coinType):
     else:
         raise ValueError('Error: invalid coin type')
     screen.home()
-    metrics = crypto.getCryptoData(coinType)
+    metrics = crypto.getCryptoInfo(coinType, False)
     exchangeRate = metrics[0]
     hourlyPercentage = metrics[4]
     dailyPercentage = metrics[3]

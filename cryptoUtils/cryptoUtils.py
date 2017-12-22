@@ -82,7 +82,7 @@ Parameters:
     - Cointype: Which coin do you want the total crypto for
 Logic:
     - Start with 0 total crypto
-    - For every address
+    - For every respective address in the config file
         - Request respective api for balance
         - Add this balance to the total crypto
     - Return the total crypto
@@ -91,21 +91,30 @@ def getTotalCrypto(coinType):
     totalCrypto = 0.0
     if coinType is "bitcoin":
         for address in config.bitcoinAddress:
-            url =  url = "https://blockchain.info/rawaddr/" + address
-            response = json.loads(request(url))
-            totalCrypto += float(response['final_balance']) / pow(10, 8)
+            try:
+                url =  url = "https://blockchain.info/rawaddr/" + address
+                response = json.loads(request(url))
+                totalCrypto += float(response['final_balance']) / pow(10, 8)
+            except Exception:
+                pass
     elif coinType is "ethereum":
         etherscanAPIKey = "V8ENE44FM98SCDPIXGGHQDFD2KCRSKJ8BJ"
-        for address in config.etherAddress:
-            url = "http://api.etherscan.io/api?module=account&action=balance&address=" + \
-            address + "&tag=latest&apikey=" + etherscanAPIKey
-            response = json.loads(request(url))
-            totalCrypto += float(response['result']) / pow(10, 18)
+        try:
+            for address in config.etherAddress:
+                url = "http://api.etherscan.io/api?module=account&action=balance&address=" + \
+                address + "&tag=latest&apikey=" + etherscanAPIKey
+                response = json.loads(request(url))
+                totalCrypto += float(response['result']) / pow(10, 18)
+        except Exception:
+            pass
     elif coinType is "litecoin":
-        for address in config.litecoinAddress:
-            url = url = "https://chain.so/api/v2/get_address_balance/LTC/" + address
-            response = json.loads(request(url))
-            totalCrypto += float(response['data']['confirmed_balance'])
+        try:
+            for address in config.litecoinAddress:
+                url = url = "https://chain.so/api/v2/get_address_balance/LTC/" + address
+                response = json.loads(request(url))
+                totalCrypto += float(response['data']['confirmed_balance'])
+        except:
+            pass
     return totalCrypto
 
 
@@ -114,6 +123,7 @@ def getTotalCrypto(coinType):
 Output: Array of metrics related to the respective coin type
 Parameters
     - Cointype: query coinmarketcap about this specified cointype
+    - Colored: Do we want the colored version of the output (only when sending to terminal do we want this)
 Logic:
     - Request info from coinmarket cap
     - Ready the response for JSON parsing
@@ -161,20 +171,20 @@ def getCryptoInfo(coinType, colored=False):
 Output: Returns an ascii table for all cryptocurrencies and their data
 Parameters:
     - clearConsole: Do we want to clear the console before returning this data (we do want to do this when running in monitor mode)
+    - Colored: Do we want the table to be colored
 Logic:
     - Create header
     - Get metrics on each legal currency and insert into their own array
     - Get the total fiat by adding the last index of each metrics array together
     - Insert cointypes into the respective array
     - Combine the header and the crypoto metrics into one big metrics array
-    - Create the ascii table from this data
-    -
+    - Create the ascii table from this data and return it
 """
-def getCryptoData(clearConsole=False, colored=True):
+def getCryptoTable(clearConsole=False, colored=True):
     if colored:
         header = [Color("{automagenta}Coin Type{/automagenta}"), Color("{automagenta}Price " + config.fiatCurrency+"{/automagenta}"),
         Color("{automagenta}24h Volume{/automagenta}"), Color("{automagenta}7d % Change{/automagenta}"), Color("{automagenta}24h % Change{/automagenta}"),
-        Color("{automagenta}1h % Change{/automagenta}"), Color("{automagenta}Total Crypto Balance{/automagenta}"), Color("{automagenta}Total " + config.fiatCurrency + "{/automagenta}")]
+        Color("{automagenta}1h % Change{/automagenta}"), Color("{automagenta}Crypto Balance{/automagenta}"), Color("{automagenta}" + config.fiatCurrency.upper() + " Balance" + "{/automagenta}")]
         metrics = []
         bitcoinMetrics = getCryptoInfo("bitcoin", colored)
         ethereumMetrics = getCryptoInfo("ethereum", colored)
@@ -183,9 +193,9 @@ def getCryptoData(clearConsole=False, colored=True):
         bitcoinMetrics.insert(0, Color("{autocyan}Bitcoin{/autocyan}"))
         ethereumMetrics.insert(0, Color("{autocyan}Ethereum{/autocyan}"))
         litecoinMetrics.insert(0, Color("{autocyan}Litecoin{/autocyan}"))
-        footer = Color("{automagenta}Last Updated: %s{/automagenta} \t\t\t\t\t\t\t\t{autogreen}Total %s: %.2f{/autogreen}" % (str(datetime.now()), config.fiatCurrency, totalFiat))
+        footer = Color("{automagenta}Last Updated: %s{/automagenta}\t\t\t\t\t\t\t      {autogreen}Total %s: %.2f{/autogreen}" % (str(datetime.now()), config.fiatCurrency, totalFiat))
     else:
-        header = ["Coin Type","Price " + config.fiatCurrency, "24h Volume", "7d % Change", "24h % Change", "1h % Change", "Total Crypto Balance", "Total " + config.fiatCurrency]
+        header = ["Coin Type","Price " + config.fiatCurrency, "24h Volume", "7d % Change", "24h % Change", "1h % Change", "Crypto Balance",config.fiatCurrency.upper() + " Balance"]
         metrics = []
         bitcoinMetrics = getCryptoInfo("bitcoin")
         ethereumMetrics = getCryptoInfo("ethereum")
@@ -194,7 +204,7 @@ def getCryptoData(clearConsole=False, colored=True):
         bitcoinMetrics.insert(0, "Bitcoin")
         ethereumMetrics.insert(0, "Ethereum")
         litecoinMetrics.insert(0, "Litecoin")
-        footer = "Last Updated: %s \t\t\t\t\t\t\t\tTotal %s: %.2f" % (str(datetime.now()), config.fiatCurrency, totalFiat) 
+        footer = "Last Updated: %s \t\t\t\t\t\t\t      Total %s: %.2f" % (str(datetime.now()), config.fiatCurrency, totalFiat)
     metrics.append(header)
     metrics.append(bitcoinMetrics)
     metrics.append(ethereumMetrics)

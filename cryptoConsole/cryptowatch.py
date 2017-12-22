@@ -31,7 +31,7 @@ from os.path import expanduser
 
 
 from cryptoUtils.cryptoUtils import clear
-from cryptoUtils.cryptoUtils import getCryptoData
+from cryptoUtils.cryptoUtils import getCryptoTable
 import cryptoUtils.cwconfig as cfg
 
 
@@ -57,8 +57,9 @@ def cryptoFile(filePath):
             exit()
     try:
         with open(filePath, 'w+') as file:
-            data = getCryptoData(False, False)
+            data = getCryptoTable(False, False)
             file.write(data)
+            file.write("\n")
     except IsADirectoryError:
         print("Error: the path provided is a directory")
         exit()
@@ -68,7 +69,7 @@ def cryptoFile(filePath):
 def consoleLoop():
     try:
         while True:
-            print(getCryptoData(True))
+            print(getCryptoTable(True))
             sleep(30)
     except KeyboardInterrupt:
         clear()
@@ -100,4 +101,4 @@ def main():
         else:
             print("Error: invalid monitor type")
     else:
-        print(getCryptoData())
+        print(getCryptoTable())

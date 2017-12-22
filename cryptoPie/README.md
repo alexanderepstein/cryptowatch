@@ -21,7 +21,7 @@ In between LCD Backlight +5V I used a 1k ohm resistor to prevent overpowering th
 * After installing cryptowatch run ```cryptowatch --config``` and setup your account addresses.
 * Make sure the circuit is wired identical to the picture or that you have changed the config file respectively.
 * Run ```cryptowatch --monitor pie``` or ```cryptowatch --monitor rpi``` to run cryptoPie
-* Hopefully magic?
+* Profit???
 
 ## License
 
