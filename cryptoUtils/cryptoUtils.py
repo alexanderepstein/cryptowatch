@@ -123,6 +123,15 @@ def getTotalCrypto(coinType):
                 totalCrypto += float(response) / pow(10, 8)
             except Exception:
                 pass
+    elif coinType is "dash":
+        for address in config.dashAddress:
+                try:
+                    url = url = "https://chain.so/api/v2/get_address_balance/DASH/" + address
+                    response = json.loads(request(url))
+                    print(response)
+                    totalCrypto += float(response['data']['confirmed_balance'])
+                except Exception:
+                    pass
     return totalCrypto
 
 
@@ -140,7 +149,7 @@ Logic:
 """
 def getCryptoInfo(coinType, colored=False):
     metrics = []
-    coinTypes = ["bitcoin", "ethereum", "litecoin", "bitcoin-cash"]
+    coinTypes = ["bitcoin", "ethereum", "litecoin", "bitcoin-cash", "dash"]
     if coinType not in coinTypes:
         raise ValueError("Invalid coinType")
     url = "https://api.coinmarketcap.com/v1/ticker/" + coinType + "/?convert=" + config.fiatCurrency
@@ -189,39 +198,37 @@ Logic:
     - Create the ascii table from this data and return it
 """
 def getCryptoTable(clearConsole=False, colored=True):
+    metrics = []
+    bitcoinMetrics = getCryptoInfo("bitcoin", colored)
+    ethereumMetrics = getCryptoInfo("ethereum", colored)
+    litecoinMetrics = getCryptoInfo("litecoin", colored)
+    bitcoinCashMetrics = getCryptoInfo("bitcoin-cash", colored)
+    dashMetrics = getCryptoInfo("dash", colored)
+    totalFiat = bitcoinMetrics[-1] + ethereumMetrics[-1] + litecoinMetrics[-1] + bitcoinCashMetrics[-1] + dashMetrics[-1]
     if colored:
         header = [Color("{automagenta}Coin Type{/automagenta}"), Color("{automagenta}Price " + config.fiatCurrency+"{/automagenta}"),
         Color("{automagenta}24h Volume{/automagenta}"), Color("{automagenta}7d % Change{/automagenta}"), Color("{automagenta}24h % Change{/automagenta}"),
         Color("{automagenta}1h % Change{/automagenta}"), Color("{automagenta}Crypto Balance{/automagenta}"), Color("{automagenta}" + config.fiatCurrency.upper() + " Balance" + "{/automagenta}")]
-        metrics = []
-        bitcoinMetrics = getCryptoInfo("bitcoin", colored)
-        ethereumMetrics = getCryptoInfo("ethereum", colored)
-        litecoinMetrics = getCryptoInfo("litecoin", colored)
-        bitcoinCashMetrics = getCryptoInfo("bitcoin-cash", colored)
-        totalFiat = bitcoinMetrics[-1] + ethereumMetrics[-1] + litecoinMetrics[-1] + bitcoinCashMetrics[-1]
         bitcoinMetrics.insert(0, Color("{autocyan}Bitcoin{/autocyan}"))
         ethereumMetrics.insert(0, Color("{autocyan}Ethereum{/autocyan}"))
         litecoinMetrics.insert(0, Color("{autocyan}Litecoin{/autocyan}"))
         bitcoinCashMetrics.insert(0, Color("{autocyan}Bitcoin Cash{/autocyan}"))
+        dashMetrics.insert(0, Color("{autocyan}Dash{/autocyan}"))
         footer = Color("{automagenta}Last Updated: %s{/automagenta}\t\t\t\t\t\t\t      {autogreen}Total %s: %.2f{/autogreen}" % (str(datetime.now()), config.fiatCurrency, totalFiat))
     else:
         header = ["Coin Type","Price " + config.fiatCurrency, "24h Volume", "7d % Change", "24h % Change", "1h % Change", "Crypto Balance",config.fiatCurrency.upper() + " Balance"]
-        metrics = []
-        bitcoinMetrics = getCryptoInfo("bitcoin")
-        ethereumMetrics = getCryptoInfo("ethereum")
-        litecoinMetrics = getCryptoInfo("litecoin")
-        bitcoinCashMetrics = getCryptoInfo("bitcoin-cash")
-        totalFiat = bitcoinMetrics[-1] + ethereumMetrics[-1] + litecoinMetrics[-1] + bitcoinCashMetrics[-1]
         bitcoinMetrics.insert(0, "Bitcoin")
         ethereumMetrics.insert(0, "Ethereum")
         litecoinMetrics.insert(0, "Litecoin")
         bitcoinCashMetrics.insert(0, "Bitcoin Cash")
+        dashMetrics.insert(0, "Dash")
         footer = "Last Updated: %s \t\t\t\t\t\t\t      Total %s: %.2f" % (str(datetime.now()), config.fiatCurrency, totalFiat)
     metrics.append(header)
     metrics.append(bitcoinMetrics)
     metrics.append(ethereumMetrics)
     metrics.append(litecoinMetrics)
     metrics.append(bitcoinCashMetrics)
+    metrics.append(dashMetrics)
     table = AsciiTable(metrics)
     if clearConsole:
         clear()
