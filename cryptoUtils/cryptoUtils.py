@@ -87,19 +87,11 @@ def get_total_crypto(coin_type):
             except Exception:
                 pass
     elif coin_type == "ethereum":
-        etherscan_api_key = "V8ENE44FM98SCDPIXGGHQDFD2KCRSKJ8BJ"
         for address in config.etherAddress:
             try:
-                url = "http://api.etherscan.io/api"
-                params = {
-                    'module': 'account',
-                    'action': 'balance',
-                    'address': address,
-                    'tag': 'latest',
-                    'apikey': etherscan_api_key
-                }
-                response = request(url, params)
-                total_crypto += float(response['result']) / pow(10, 18)
+                url = "https://api.blockcypher.com/v1/eth/main/addrs/" + address
+                response = request(url)
+                total_crypto += float(response['final_balance']) / pow(10, 18)
             except Exception:
                 pass
     elif coin_type == "litecoin":
