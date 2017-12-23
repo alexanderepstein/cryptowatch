@@ -67,10 +67,10 @@ class config(object):
     def __init__(self):
         self.createConfigFile()
         configParser.read(configFilePath)
-        self.etherAddress = configParser.get('cryptoConsole-config', 'etherAddress').split(", ")
-        self.bitcoinAddress = configParser.get('cryptoConsole-config', 'bitcoinAddress').split(", ")
-        self.litecoinAddress = configParser.get('cryptoConsole-config', 'litecoinAddress').split(", ")
-        self.bitcoinCashAddress = configParser.get('cryptoConsole-config', 'bitcoinCashAddress').split(", ")
+        self.bitcoinAddress = map(str.strip, configParser.get('cryptoConsole-config', 'bitcoinAddress').split(","))
+        self.etherAddress = map(str.strip, configParser.get('cryptoConsole-config', 'etherAddress').split(","))
+        self.litecoinAddress = map(str.strip, configParser.get('cryptoConsole-config', 'litecoinAddress').split(","))
+        self.bitcoinCashAddress = map(str.strip, configParser.get('cryptoConsole-config', 'bitcoinCashAddress').split(","))
         self.dashAddress = configParser.get('cryptoConsole-config', 'dashAddress').split(", ")
         self.fiatCurrency = configParser.get('cryptoConsole-config', 'fiatCurrency')
         self.registerSelect = configParser.get('cryptoPie-config', 'registerSelect')
@@ -97,8 +97,8 @@ class config(object):
         if not exists(configFilePath):
             with open(configFilePath, 'w+') as file:
                 file.write("[cryptoConsole-config]\n")
-                file.write("etherAddress = \n")
                 file.write("bitcoinAddress = \n")
+                file.write("etherAddress = \n")
                 file.write("litecoinAddress = \n")
                 file.write("bitcoinCashAddress = \n")
                 file.write("dashAddress = \n")
