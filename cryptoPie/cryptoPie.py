@@ -108,10 +108,11 @@ def main():
     screen.enable_display(True)  # just in case
     screen.clear()  # just in case
     screen.home()  # start at inital position
-    while True:
-        showCryptoStats("bitcoin")
-        showCryptoStats("ethereum")
-        showCryptoStats("litecoin")
+    try:
+        while True:
+            showCryptoStats("bitcoin")
+            showCryptoStats("ethereum")
+            showCryptoStats("litecoin")
     except KeyboardInterrupt:
         screen.clear()
         screen.enable_display(False)
