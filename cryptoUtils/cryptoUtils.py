@@ -128,7 +128,6 @@ def getTotalCrypto(coinType):
                 try:
                     url = url = "https://chain.so/api/v2/get_address_balance/DASH/" + address
                     response = json.loads(request(url))
-                    print(response)
                     totalCrypto += float(response['data']['confirmed_balance'])
                 except Exception:
                     pass
