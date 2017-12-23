@@ -73,7 +73,7 @@ def showCryptoStats(coinType):
     elif coinType == "bitcoin-cash":
         cryptoTicker = "BCH"
         address = config.bitcoinCashAddress
-    elif coinType == "dash"
+    elif coinType == "dash":
         cryptoTicker = "DSH"
         address = config.dashAddress
     else:
