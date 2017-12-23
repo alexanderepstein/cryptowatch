@@ -34,7 +34,7 @@ setup(
     entry_points={
         'console_scripts': ['cryptowatch=cryptoConsole.cryptowatch:main'],
     },
-    keywords = ['cryptcurrencies', 'monitor', 'rpi', 'console'], # arbitrary keywords
+    keywords = ['cryptocurrencies', 'monitor', 'rpi', 'console'], # arbitrary keywords
     install_requires=required,
     include_package_data=True,
     license='MIT',

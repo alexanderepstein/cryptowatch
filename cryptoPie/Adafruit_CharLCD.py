@@ -266,7 +266,7 @@ class Adafruit_CharLCD(object):
     def create_char(self, location, pattern):
         """Fill one of the first 8 CGRAM locations with custom characters.
         The location parameter should be between 0 and 7 and pattern should
-        provide an array of 8 bytes containing the pattern. E.g. you can easyly
+        provide an array of 8 bytes containing the pattern. E.g. you can easily
         design your custom character at http://www.quinapalus.com/hd44780udg.html
         To show your custom character use eg. lcd.message('\x01')
         """
