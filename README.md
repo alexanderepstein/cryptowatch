@@ -4,7 +4,7 @@
 
 <img src="https://images.duckduckgo.com/iu/?u=http%3A%2F%2Fsogilis.com%2Fwp-content%2Fuploads%2F2016%2F05%2FIllustration_Sogilis_droite_print.png&f=1" height="300px" width="300px">
 
-#### Monitor prices and account balances for bitcoin, ethereum, and litecoin
+#### Monitor prices and account balances for bitcoin, ethereum, litecoin, bitcoin cash and dash
 #### Use either the terminal or Raspberry Pi LCD for monitoring
 
 ![PythonVer](https://img.shields.io/pypi/pyversions/cryptowatch.svg)
@@ -31,7 +31,7 @@ pip3 install cryptowatch
 ```
 usage: Cryptowatch [-h] [-m MONITOR] [-f FILE] [-c] [-v]
 
-Track prices and account balances for bitcoin, ethereum, and litecoin
+Track prices and account balances for bitcoin, ethereum, litecoin, bitcoin cash and dash
 
 optional arguments:
   -h, --help            show this help message and exit

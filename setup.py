@@ -5,7 +5,7 @@ from setuptools import find_packages, setup
 
 # Package meta-data.
 NAME = 'cryptowatch'
-DESCRIPTION = 'Track prices and account balances for bitcoin, ethereum, and litecoin'
+DESCRIPTION = 'Track prices and account balances for bitcoin, ethereum, litecoin, bitcoin cash and dash'
 URL = 'https://github.com/alexanderepstein/cryptowatch'
 EMAIL = 'epsteina@wit.edu'
 AUTHOR = 'Alexander Epstein'
