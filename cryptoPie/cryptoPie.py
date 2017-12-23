@@ -107,7 +107,7 @@ def showCryptoStats(coinType):
 def main():
     screen.enable_display(True)  # just in case
     screen.clear()  # just in case
-    screen.home()  # start at inital position
+    screen.home()  # start at initial position
     try:
         while True:
             showCryptoStats("bitcoin")
