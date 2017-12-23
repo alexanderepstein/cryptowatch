@@ -26,22 +26,9 @@ from datetime import datetime
 from sys import platform
 from os import system
 
-try:
-    from colorclass import Color
-except ImportError:
-    raise ImportError(
-        "Error: no colorclass module found, install it with pip"
-    )
-try:
-    import requests
-except ImportError:
-    raise ImportError("Error: no requests module found, install it with pip")
-try:
-    from terminaltables import AsciiTable
-except ImportError:
-    raise ImportError(
-        "Error: no terminaltables module found, install it with pip"
-    )
+import requests
+from colorclass import Color
+from terminaltables import AsciiTable
 
 import cryptoUtils.cwconfig as cfg
 
