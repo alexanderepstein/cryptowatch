@@ -2,7 +2,7 @@
 ## Usage
 ```python
 import cryptoUtils.cryptoUtils as crypto
-crypto.getTotalEther()
+crypto.get_total_crypto()
 ```
 ## Documentation on methods
 
@@ -32,7 +32,7 @@ Logic:
 ```
 
 ```python
-getTotalCrypto(coinType)
+get_total_crypto(coinType)
 
 
 Output: Total crypto across all addresses in the config class
@@ -49,7 +49,7 @@ Logic:
 ```
 
 ```python
-getCryptoInfo(coinType, colored=False)
+get_crypto_info(coinType, colored=False)
 
 
 Output: Array of metrics related to the respective coin type
@@ -66,7 +66,7 @@ Logic:
 ```
 
 ```python
-getCryptoTable(clearConsole=False, colored=False)
+get_crypto_table(clearConsole=False, colored=False)
 
 Output: Returns an ascii table for all cryptocurrencies and their data
 

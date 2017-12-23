@@ -53,6 +53,25 @@ optional arguments:
 
 ##### Edit the config file ```cryptowatch --config```
 
+## Getting Started
+
+* First install cryptowatch
+
+* Then run
+  ```bash
+  cryptowatch --config
+  ```
+  this will create a config file if one does not exist and edit it.
+    * The file can be found
+      * Windows: ```C:/.crypto.cfg```
+      * macOS/Linux: ```~/.crypto.cfg```
+      
+* Write in the addresses you want to track next to their respective variable, if more then one address for a type of crypto separate them with commas and a space after the comma
+
+* Save and close the file and now you are ready to use cryptowatch!
+
+The above steps help with getting address balance monitoring, cryptowatch still works without these steps
+
 ## Programmatic Usage
 
 #### [CryptoUtils Documentation](https://github.com/alexanderepstein/cryptowatch/blob/master/cryptoUtils/README.md)
