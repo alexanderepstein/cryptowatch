@@ -49,6 +49,8 @@ optional arguments:
 
 ##### Output information to a file ```cryptowatch -f desiredFilePath```
 
+##### Display the raspberry pi monitor ```cryptowatch --monitor rpi```
+
 ##### Edit the config file ```cryptowatch --config```
 
 ## Programmatic Usage
