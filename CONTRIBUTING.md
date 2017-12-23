@@ -15,6 +15,11 @@ If you've noticed a bug or have a question, search the <a href="https://github.c
 git clone https://github.com/yourusernamehere/cryptowatch
 ```
 
+#### 2. Get all the Dependencies and enter the virtual enviornment
+* Make sure you have pipenv installed
+* Then cd into the cryptowatch folder ```cd cryptowatch```
+* Run ```pipenv install```
+* Run ```pipenv shell```
 
 #### 3. Implement your fix, feature or enhancement
 

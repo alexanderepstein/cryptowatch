@@ -86,7 +86,7 @@ def main():
         print("Error: all options for cryptowatch are mutually exclusive")
         exit()
     if args.version:
-        print("Cryptowatch Version 0.0.7")
+        print("Cryptowatch Version 0.0.8")
     elif args.config:
         config.edit()
     elif args.file != "":
