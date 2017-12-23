@@ -73,7 +73,7 @@ def clear():
     elif platform == "win32":
         system("cls")
     else:
-        print("Uh-oh you are using an unsported system :/")
+        print("Uh-oh you are using an unsupported system :/")
 
 
 """
@@ -99,22 +99,30 @@ def getTotalCrypto(coinType):
                 pass
     elif coinType is "ethereum":
         etherscanAPIKey = "V8ENE44FM98SCDPIXGGHQDFD2KCRSKJ8BJ"
-        try:
-            for address in config.etherAddress:
+        for address in config.etherAddress:
+            try:
                 url = "http://api.etherscan.io/api?module=account&action=balance&address=" + \
                 address + "&tag=latest&apikey=" + etherscanAPIKey
                 response = json.loads(request(url))
                 totalCrypto += float(response['result']) / pow(10, 18)
-        except Exception:
-            pass
+            except Exception:
+                pass
     elif coinType is "litecoin":
-        try:
-            for address in config.litecoinAddress:
-                url = url = "https://chain.so/api/v2/get_address_balance/LTC/" + address
+        for address in config.litecoinAddress:
+                try:
+                    url = url = "https://chain.so/api/v2/get_address_balance/LTC/" + address
+                    response = json.loads(request(url))
+                    totalCrypto += float(response['data']['confirmed_balance'])
+                except Exception:
+                    pass
+    elif coinType == "bitcoin-cash": # Need to use == here and not is cannot figure out why
+        for address in config.bitcoinCashAddress:
+            try:
+                url = "https://cashexplorer.bitcoin.com/api/addr/" + address + "/balance"
                 response = json.loads(request(url))
-                totalCrypto += float(response['data']['confirmed_balance'])
-        except:
-            pass
+                totalCrypto += float(response) / pow(10, 8)
+            except Exception:
+                pass
     return totalCrypto
 
 
@@ -132,7 +140,7 @@ Logic:
 """
 def getCryptoInfo(coinType, colored=False):
     metrics = []
-    coinTypes = ["bitcoin", "ethereum", "litecoin"]
+    coinTypes = ["bitcoin", "ethereum", "litecoin", "bitcoin-cash"]
     if coinType not in coinTypes:
         raise ValueError("Invalid coinType")
     url = "https://api.coinmarketcap.com/v1/ticker/" + coinType + "/?convert=" + config.fiatCurrency
@@ -189,10 +197,12 @@ def getCryptoTable(clearConsole=False, colored=True):
         bitcoinMetrics = getCryptoInfo("bitcoin", colored)
         ethereumMetrics = getCryptoInfo("ethereum", colored)
         litecoinMetrics = getCryptoInfo("litecoin", colored)
-        totalFiat = bitcoinMetrics[-1] + ethereumMetrics[-1] + litecoinMetrics[-1]
+        bitcoinCashMetrics = getCryptoInfo("bitcoin-cash", colored)
+        totalFiat = bitcoinMetrics[-1] + ethereumMetrics[-1] + litecoinMetrics[-1] + bitcoinCashMetrics[-1]
         bitcoinMetrics.insert(0, Color("{autocyan}Bitcoin{/autocyan}"))
         ethereumMetrics.insert(0, Color("{autocyan}Ethereum{/autocyan}"))
         litecoinMetrics.insert(0, Color("{autocyan}Litecoin{/autocyan}"))
+        bitcoinCashMetrics.insert(0, Color("{autocyan}Bitcoin Cash{/autocyan}"))
         footer = Color("{automagenta}Last Updated: %s{/automagenta}\t\t\t\t\t\t\t      {autogreen}Total %s: %.2f{/autogreen}" % (str(datetime.now()), config.fiatCurrency, totalFiat))
     else:
         header = ["Coin Type","Price " + config.fiatCurrency, "24h Volume", "7d % Change", "24h % Change", "1h % Change", "Crypto Balance",config.fiatCurrency.upper() + " Balance"]
@@ -200,15 +210,18 @@ def getCryptoTable(clearConsole=False, colored=True):
         bitcoinMetrics = getCryptoInfo("bitcoin")
         ethereumMetrics = getCryptoInfo("ethereum")
         litecoinMetrics = getCryptoInfo("litecoin")
-        totalFiat = bitcoinMetrics[-1] + ethereumMetrics[-1] + litecoinMetrics[-1]
+        bitcoinCashMetrics = getCryptoInfo("bitcoin-cash")
+        totalFiat = bitcoinMetrics[-1] + ethereumMetrics[-1] + litecoinMetrics[-1] + bitcoinCashMetrics[-1]
         bitcoinMetrics.insert(0, "Bitcoin")
         ethereumMetrics.insert(0, "Ethereum")
         litecoinMetrics.insert(0, "Litecoin")
+        bitcoinCashMetrics.insert(0, "Bitcoin Cash")
         footer = "Last Updated: %s \t\t\t\t\t\t\t      Total %s: %.2f" % (str(datetime.now()), config.fiatCurrency, totalFiat)
     metrics.append(header)
     metrics.append(bitcoinMetrics)
     metrics.append(ethereumMetrics)
     metrics.append(litecoinMetrics)
+    metrics.append(bitcoinCashMetrics)
     table = AsciiTable(metrics)
     if clearConsole:
         clear()
