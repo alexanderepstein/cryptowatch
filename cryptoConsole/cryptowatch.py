@@ -30,7 +30,7 @@ from time import sleep
 
 import cryptoUtils.cwconfig as cfg
 from cryptoUtils.cryptoUtils import clear
-from cryptoUtils.cryptoUtils import getCryptoTable
+from cryptoUtils.cryptoUtils import get_crypto_table
 
 
 HEADER = '''\
@@ -58,7 +58,7 @@ def crypto_file(file_path):
             exit()
     try:
         with open(file_path, 'w+') as file:
-            data = getCryptoTable(False, False)
+            data = get_crypto_table(False, False)
             file.write(data)
             file.write("\n")
     except IsADirectoryError:
@@ -70,7 +70,7 @@ def crypto_file(file_path):
 def console_loop():
     try:
         while True:
-            print(getCryptoTable(True))
+            print(get_crypto_table(True))
             sleep(30)
     except KeyboardInterrupt:
         clear()
@@ -124,4 +124,4 @@ def main():
         else:
             console_loop()
     else:
-        print(getCryptoTable())
+        print(get_crypto_table())
