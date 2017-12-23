@@ -32,14 +32,16 @@ import cryptoUtils.cwconfig as cfg
 from cryptoUtils.cryptoUtils import clear
 from cryptoUtils.cryptoUtils import getCryptoTable
 
-HEADER = r'''
+
+HEADER = '''\
 _________                        __                         __         .__
 \_   ___ \_______ ___.__._______/  |_  ______  _  _______ _/  |_  ____ |  |__
-/    \  \/\_  __ <   |  |\____ \   __\/  _ \ \/ \/ /\__  \\   __\/ ___\|  |  \
-\     \____|  | \/\___  ||  |_> >  | (  <_> )     /  / __ \|  | \  \___|   Y  \
+/    \  \/\_  __ <   |  |\____ \   __\/  _ \ \/ \/ /\__  \\\\   __\/ ___\|  |  \\
+\     \____|  | \/\___  ||  |_> >  | (  <_> )     /  / __ \|  | \  \___|   Y  \\
 \______  /|__|   / ____||   __/|__|   \____/ \/\_/  (____  /__|  \___  >___|  /
        \/        \/     |__|                             \/          \/     \/
-         Created by: Alex Epstein https://github.com/alexanderepstein'''
+         Created by: Alex Epstein https://github.com/alexanderepstein
+'''
 
 
 def print_header():
