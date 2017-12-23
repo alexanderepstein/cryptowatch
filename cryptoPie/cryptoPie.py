@@ -70,6 +70,12 @@ def showCryptoStats(coinType):
     elif coinType == "litecoin":
         cryptoTicker = "LTC"
         address = config.litecoinAddress
+    elif coinType == "bitcoin-cash":
+        cryptoTicker = "BCH"
+        address = config.bitcoinCashAddress
+    elif coinType == "dash"
+        cryptoTicker = "DSH"
+        address = config.dashAddress
     else:
         raise ValueError('Error: invalid coin type')
     screen.home()
@@ -113,6 +119,8 @@ def main():
             showCryptoStats("bitcoin")
             showCryptoStats("ethereum")
             showCryptoStats("litecoin")
+            showCryptoStats("bitcoin-cash")
+            showCryptoStats("dash")
     except KeyboardInterrupt:
         screen.clear()
         screen.enable_display(False)
