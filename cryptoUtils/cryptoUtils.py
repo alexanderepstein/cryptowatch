@@ -144,7 +144,7 @@ Parameters
 Logic:
     - Request info from coinmarket cap
     - Ready the response for JSON parsing
-    - Parse the response and append each peice of info to the metrics array
+    - Parse the response and append each piece of info to the metrics array
     - Return the metrics array
 """
 def getCryptoInfo(coinType, colored=False):
@@ -194,7 +194,7 @@ Logic:
     - Get metrics on each legal currency and insert into their own array
     - Get the total fiat by adding the last index of each metrics array together
     - Insert cointypes into the respective array
-    - Combine the header and the crypoto metrics into one big metrics array
+    - Combine the header and the crypto metrics into one big metrics array
     - Create the ascii table from this data and return it
 """
 def getCryptoTable(clearConsole=False, colored=True):
