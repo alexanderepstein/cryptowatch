@@ -79,7 +79,7 @@ def main():
     parser = argparse.ArgumentParser(
         prog="Cryptowatch",
         description='Track prices and account balances for bitcoin, '
-                    'ethereum, and litecoin',
+                    'ethereum, litecoin, bitcoin cash and dash',
         epilog="By: Alex Epstein https://github.com/alexanderepstein"
     )
     group = parser.add_mutually_exclusive_group()
@@ -109,7 +109,7 @@ def main():
     args = parser.parse_args()
 
     if args.version:
-        print("Cryptowatch Version 0.0.7")
+        print("Cryptowatch Version 0.0.8")
     elif args.config:
         cfg.config().edit()
     elif args.file:
