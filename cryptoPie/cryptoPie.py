@@ -76,6 +76,9 @@ def showCryptoStats(coinType):
     elif coinType == "dash":
         cryptoTicker = "DSH"
         address = config.dashAddress
+    elif coinType == "ripple"
+        cryptoTicker = "XRP"
+        address = config.rippleAddress
     else:
         raise ValueError('Error: invalid coin type')
     screen.home()
@@ -121,6 +124,7 @@ def main():
             showCryptoStats("litecoin")
             showCryptoStats("bitcoin-cash")
             showCryptoStats("dash")
+            showCryptoStats("ripple")
     except KeyboardInterrupt:
         screen.clear()
         screen.enable_display(False)
