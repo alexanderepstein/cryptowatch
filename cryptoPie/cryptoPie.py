@@ -76,7 +76,7 @@ def showCryptoStats(coinType):
     elif coinType == "dash":
         cryptoTicker = "DSH"
         address = config.dashAddress
-    elif coinType == "ripple"
+    elif coinType == "ripple":
         cryptoTicker = "XRP"
         address = config.rippleAddress
     else:
