@@ -9,7 +9,7 @@ DESCRIPTION = 'Track prices and account balances for bitcoin, ethereum, litecoin
 URL = 'https://github.com/alexanderepstein/cryptowatch'
 EMAIL = 'epsteina@wit.edu'
 AUTHOR = 'Alexander Epstein'
-VERSION = '0.0.8'
+VERSION = '0.0.9'
 
 long_description = "For information on this package refer to the github: https://github.com/alexanderepstein/cryptowatch"
 # What packages are required for this module to be executed?

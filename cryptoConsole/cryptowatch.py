@@ -111,7 +111,7 @@ def main():
     args = parser.parse_args()
 
     if args.version:
-        print("Cryptowatch Version 0.0.8")
+        print("Cryptowatch Version 0.0.9")
     elif args.config:
         cfg.config().edit()
     elif args.file:
