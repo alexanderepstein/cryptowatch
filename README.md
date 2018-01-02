@@ -17,16 +17,25 @@
 
 <div align="center">
 
-[![table.png](https://s13.postimg.org/hlyuiaph3/table.png)](https://postimg.org/image/v2vt15zsj/)
+[![cryptowatch.png](https://s17.postimg.org/5qmv5tp1b/cryptowatch.png)](https://postimg.org/image/ngojqv2m3/)
 
 </div>
 
 
 ## Install
+
+### Pip install
+
 ```bash
 pip3 install cryptowatch
 ```
 
+### Snap Package Install
+
+```bash
+sudo snap install cryptowatch
+```
+Snap Package Maintained By: [Marcin Mikołajczak](https://github.com/m4sk1n)
 ## Usage
 ```
 usage: Cryptowatch [-h] [-m MONITOR] [-f FILE] [-c] [-v]
