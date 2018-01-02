@@ -133,6 +133,15 @@ def get_total_crypto(coin_type):
                 total_crypto += float(response['balances'][0]['value'])
             except Exception:
                 pass
+    elif coin_type == "digibyte":
+        for address in config.digibyteAddress:
+            try:
+                url = ("https://digiexplorer.info/api/addr/"
+                       + address + "/balance")
+                response = request(url)
+                total_crypto += float(response) / pow(10, 8)
+            except Exception:
+                pass
     return total_crypto
 
 
@@ -151,7 +160,7 @@ def get_crypto_info(coin_type, colored=False):
         - Return the metrics array
     """
     metrics = []
-    coin_types = ["bitcoin", "ethereum", "litecoin", "bitcoin-cash", "dash", "ripple"]
+    coin_types = ["bitcoin", "ethereum", "litecoin", "bitcoin-cash", "dash", "ripple", "digibyte"]
     if coin_type not in coin_types:
         raise ValueError("Invalid coin_type")
     url = "https://api.coinmarketcap.com/v1/ticker/" + coin_type
@@ -257,12 +266,14 @@ def get_crypto_table(clear_console=False, colored=True):
     bitcoin_cash_metrics = get_crypto_info("bitcoin-cash", colored)
     dash_metrics = get_crypto_info("dash", colored)
     ripple_metrics = get_crypto_info("ripple", colored)
+    digibyte_metrics = get_crypto_info("digibyte", colored)
     total_fiat =   bitcoin_metrics[-1] \
                   + ethereum_metrics[-1] \
                   + litecoin_metrics[-1] \
                   + bitcoin_cash_metrics[-1] \
                   + dash_metrics[-1] \
-                  + ripple_metrics[-1]
+                  + ripple_metrics[-1] \
+                  + digibyte_metrics[-1]
     if colored:
         header = [
             Color("{automagenta}Coin Type{/automagenta}"),
@@ -291,6 +302,7 @@ def get_crypto_table(clear_console=False, colored=True):
         )
         dash_metrics.insert(0, Color("{autocyan}Dash         (DSH){/autocyan}"))
         ripple_metrics.insert(0, Color("{autocyan}Ripple       (XRP){/autocyan}"))
+        digibyte_metrics.insert(0, Color("{autocyan}Digibyte     (DGB){/autocyan}"))
         footer = Color(
             "{automagenta}Last Updated: %s{/automagenta}\t\t\t\t\t\t\t      "
             "{autogreen}Total %s: %.2f{/autogreen}"
@@ -313,6 +325,7 @@ def get_crypto_table(clear_console=False, colored=True):
         bitcoin_cash_metrics.insert(0, "Bitcoin Cash (BCH)")
         dash_metrics.insert(0, "Dash         (DSH)")
         ripple_metrics.insert(0, "Ripple       (XRP)")
+        digibyte_metrics.insert(0, "Digibyte     (DGB)")
         footer = ("Last Updated: %s \t\t\t\t\t\t\t      Total %s: %.2f"
                   % (str(datetime.now()), config.fiatCurrency, total_fiat))
     metrics.append(header)
@@ -322,6 +335,7 @@ def get_crypto_table(clear_console=False, colored=True):
     metrics.append(bitcoin_cash_metrics)
     metrics.append(dash_metrics)
     metrics.append(ripple_metrics)
+    metrics.append(digibyte_metrics)
     table = AsciiTable(metrics)
     if clear_console:
         clear()
