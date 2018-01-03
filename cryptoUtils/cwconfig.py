@@ -70,10 +70,30 @@ class config(object):
         self.bitcoinAddress = map(str.strip, configParser.get('cryptoConsole-config', 'bitcoinAddress').split(","))
         self.etherAddress = map(str.strip, configParser.get('cryptoConsole-config', 'etherAddress').split(","))
         self.litecoinAddress = map(str.strip, configParser.get('cryptoConsole-config', 'litecoinAddress').split(","))
-        self.bitcoinCashAddress = map(str.strip, configParser.get('cryptoConsole-config', 'bitcoinCashAddress').split(","))
-        self.dashAddress = map(str.strip, configParser.get('cryptoConsole-config', 'dashAddress').split(","))
-        self.rippleAddress = map(str.strip, configParser.get('cryptoConsole-config', 'rippleAddress').split(","))
-        self.digibyteAddress = map(str.strip, configParser.get('cryptoConsole-config', 'digibyteAddress').split(","))
+        try:
+            self.bitcoinCashAddress = map(str.strip, configParser.get('cryptoConsole-config', 'bitcoinCashAddress').split(","))
+        except configparser.NoOptionError:
+            self.addCrypto("bitcoinCash")
+            configParser.read(configFilePath)
+            self.bitcoinCashAddress = map(str.strip, configParser.get('cryptoConsole-config', 'bitcoinCashAddress').split(","))
+        try:
+            self.dashAddress = map(str.strip, configParser.get('cryptoConsole-config', 'dashAddress').split(","))
+        except configparser.NoOptionError:
+            self.addCrypto("dash")
+            configParser.read(configFilePath)
+            self.dashAddress = map(str.strip, configParser.get('cryptoConsole-config', 'dashAddress').split(","))
+        try:
+            self.rippleAddress = map(str.strip, configParser.get('cryptoConsole-config', 'rippleAddress').split(","))
+        except configparser.NoOptionError:
+            self.addCrypto("ripple")
+            configParser.read(configFilePath)
+            self.rippleAddress = map(str.strip, configParser.get('cryptoConsole-config', 'rippleAddress').split(","))
+        try:
+            self.digibyteAddress = map(str.strip, configParser.get('cryptoConsole-config', 'digibyteAddress').split(","))
+        except configparser.NoOptionError:
+            self.addCrypto("digibyte")
+            configParser.read(configFilePath)
+            self.digibyteAddress = map(str.strip, configParser.get('cryptoConsole-config', 'digibyteAddress').split(","))
         self.fiatCurrency = configParser.get('cryptoConsole-config', 'fiatCurrency')
         self.registerSelect = configParser.get('cryptoPie-config', 'registerSelect')
         self.enable = configParser.get('cryptoPie-config', 'enable')
@@ -119,3 +139,11 @@ class config(object):
                 file.write("cols = 16\n")
                 file.write("rows = 2\n")
                 file.write(comment)
+
+    def addCrypto(self, coinType):
+        with open(configFilePath, "r") as file:
+            original = file.read()
+        with open(configFilePath, "w+") as file:
+            file.write(original[0:23] )
+            file.write(coinType + "Address = \n")
+            file.write(original[23:])
