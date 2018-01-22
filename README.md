@@ -35,7 +35,7 @@ pip3 install cryptowatch
 ```bash
 sudo snap install cryptowatch
 ```
-Snap Package Maintained By: [Marcin Mikołajczak](https://github.com/m4sk1n)
+Snap package maintained by: [Marcin Mikołajczak](https://github.com/m4sk1n)
 ## Usage
 ```
 usage: Cryptowatch [-h] [-m MONITOR] [-f FILE] [-c] [-v]

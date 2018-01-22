@@ -1,0 +1,19 @@
+name: cryptowatch
+version: git
+summary: Cryptocurrency price and account balance monitor
+description: |
+  Monitor prices and account balaces for bitcoin, ethereum, and litecoin
+  Use either the terminal or Raspberry Pi LCD for monitoring
+grade: stable
+confinement: strict
+
+apps:
+  cryptowatch:
+    command: cryptowatch
+    plugs:
+      - network
+
+parts:
+  cryptowatch:
+    source: .
+    plugin: python
