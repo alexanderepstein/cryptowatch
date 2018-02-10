@@ -23,7 +23,7 @@
 # SOFTWARE.
 import configparser
 from os.path import exists
-from os import system
+from os import system, remove, rename
 from sys import platform
 configParser = configparser.RawConfigParser()
 
@@ -76,24 +76,35 @@ class config(object):
             self.addCrypto("bitcoinCash")
             configParser.read(configFilePath)
             self.bitcoinCashAddress = map(str.strip, configParser.get('cryptoConsole-config', 'bitcoinCashAddress').split(","))
+            pass
         try:
             self.dashAddress = map(str.strip, configParser.get('cryptoConsole-config', 'dashAddress').split(","))
         except configparser.NoOptionError:
             self.addCrypto("dash")
             configParser.read(configFilePath)
             self.dashAddress = map(str.strip, configParser.get('cryptoConsole-config', 'dashAddress').split(","))
+            pass
         try:
             self.rippleAddress = map(str.strip, configParser.get('cryptoConsole-config', 'rippleAddress').split(","))
         except configparser.NoOptionError:
             self.addCrypto("ripple")
             configParser.read(configFilePath)
             self.rippleAddress = map(str.strip, configParser.get('cryptoConsole-config', 'rippleAddress').split(","))
+            pass
         try:
             self.digibyteAddress = map(str.strip, configParser.get('cryptoConsole-config', 'digibyteAddress').split(","))
         except configparser.NoOptionError:
             self.addCrypto("digibyte")
             configParser.read(configFilePath)
             self.digibyteAddress = map(str.strip, configParser.get('cryptoConsole-config', 'digibyteAddress').split(","))
+            pass
+        try:
+            self.stellarAddress = map(str.strip, configParser.get('cryptoConsole-config', 'stellarAddress').split(","))
+        except configparser.NoOptionError:
+            self.addCrypto("stellar")
+            configParser.read(configFilePath)
+            self.stellarAddress = map(str.strip, configParser.get('cryptoConsole-config', 'stellarAddress').split(","))
+            pass
         self.fiatCurrency = configParser.get('cryptoConsole-config', 'fiatCurrency')
         self.registerSelect = configParser.get('cryptoPie-config', 'registerSelect')
         self.enable = configParser.get('cryptoPie-config', 'enable')
@@ -126,6 +137,7 @@ class config(object):
                 file.write("dashAddress = \n")
                 file.write("rippleAddress = \n")
                 file.write("digibyteAddress = \n")
+                file.write("stellarAddress = \n")
                 file.write("fiatCurrency = USD\n\n")
                 file.write("[cryptoPie-config]\n\n")
                 file.write("# GPIO Configuration\n")
@@ -141,9 +153,12 @@ class config(object):
                 file.write(comment)
 
     def addCrypto(self, coinType):
-        with open(configFilePath, "r") as file:
-            original = file.read()
-        with open(configFilePath, "w+") as file:
-            file.write(original[0:23] )
-            file.write(coinType + "Address = \n")
-            file.write(original[23:])
+        lineNum = 1
+        with open(configFilePath, "r") as inFile:
+            with open(configFilePath + "new", "w") as outFile:
+                for line in inFile:
+                    if (lineNum == 2): outFile.write(coinType + "Address = \n")
+                    outFile.write(line)
+                    lineNum += 1
+        remove(configFilePath)
+        rename(configFilePath + "new", configFilePath)

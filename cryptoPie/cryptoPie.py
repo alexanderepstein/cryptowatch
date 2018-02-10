@@ -129,6 +129,7 @@ def main():
             showCryptoStats("dash")
             showCryptoStats("ripple")
             showCryptoStats("digibyte")
+            showCryptoStats("stellar")
     except KeyboardInterrupt:
         screen.clear()
         screen.enable_display(False)

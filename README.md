@@ -4,7 +4,7 @@
 
 <img src="https://images.duckduckgo.com/iu/?u=http%3A%2F%2Fsogilis.com%2Fwp-content%2Fuploads%2F2016%2F05%2FIllustration_Sogilis_droite_print.png&f=1" height="300px" width="300px">
 
-#### Monitor prices and account balances for bitcoin, ethereum, litecoin, bitcoin cash and dash
+#### Monitor prices and account balances for multiple cryptocurrencies
 #### Use either the terminal or Raspberry Pi LCD for monitoring
 
 ![PythonVer](https://img.shields.io/pypi/pyversions/cryptowatch.svg)
@@ -108,6 +108,9 @@ If this project helped you in any way and you feel like supporting me
 ###### BTC: 38Q5VbH63MtouxHu8BuPNLzfY5B5RNVMDn
 ###### ETH: 0xf7c60C06D298FF954917eA45206426f79d40Ac9D
 ###### LTC: LWZ3T19YUk66dgkczN7dRhiXDMqSYrXUV4
+###### DSH: XpV1LtM5PvpfR9z5pYFZVmgcpLkDmrFAKM
+###### XRP: r4ZsnoHM94zMb2SCJ89fYzQqmGgozqLZF1
+###### XLM: GDN7WCUBAKLLUYENLUBM6LA647UAS5QTZDNV3QZMMMQLOJJKPJKACJ3H
 
 ## License
 

@@ -142,6 +142,14 @@ def get_total_crypto(coin_type):
                 total_crypto += float(response) / pow(10, 8)
             except Exception:
                 pass
+    elif coin_type == "stellar":
+        for address in config.stellarAddress:
+            try:
+                url = ("https://horizon.stellar.org/accounts/" + address)
+                response = request(url)
+                total_crypto += float(response['balances'][0]['balance']) if str(response['balances'][0]['asset_type']) == "native" else 0
+            except Exception:
+                pass
     return total_crypto
 
 
@@ -160,7 +168,7 @@ def get_crypto_info(coin_type, colored=False):
         - Return the metrics array
     """
     metrics = []
-    coin_types = ["bitcoin", "ethereum", "litecoin", "bitcoin-cash", "dash", "ripple", "digibyte"]
+    coin_types = ["bitcoin", "ethereum", "litecoin", "bitcoin-cash", "dash", "ripple", "digibyte", "stellar"]
     if coin_type not in coin_types:
         raise ValueError("Invalid coin_type")
     url = "https://api.coinmarketcap.com/v1/ticker/" + coin_type
@@ -267,13 +275,15 @@ def get_crypto_table(clear_console=False, colored=True):
     dash_metrics = get_crypto_info("dash", colored)
     ripple_metrics = get_crypto_info("ripple", colored)
     digibyte_metrics = get_crypto_info("digibyte", colored)
+    stellar_metrics = get_crypto_info("stellar", colored)
     total_fiat =   bitcoin_metrics[-1] \
                   + ethereum_metrics[-1] \
                   + litecoin_metrics[-1] \
                   + bitcoin_cash_metrics[-1] \
                   + dash_metrics[-1] \
                   + ripple_metrics[-1] \
-                  + digibyte_metrics[-1]
+                  + digibyte_metrics[-1] \
+                  + stellar_metrics[-1]
     if colored:
         header = [
             Color("{automagenta}Coin Type{/automagenta}"),
@@ -303,6 +313,7 @@ def get_crypto_table(clear_console=False, colored=True):
         dash_metrics.insert(0, Color("{autocyan}Dash         (DSH){/autocyan}"))
         ripple_metrics.insert(0, Color("{autocyan}Ripple       (XRP){/autocyan}"))
         digibyte_metrics.insert(0, Color("{autocyan}Digibyte     (DGB){/autocyan}"))
+        stellar_metrics.insert(0, Color("{autocyan}Stellar      (XLM){/autocyan}"))
         footer = Color(
             "{automagenta}Last Updated: %s{/automagenta}\t\t\t\t\t\t\t      "
             "{autogreen}Total %s: %.2f{/autogreen}"
@@ -326,6 +337,7 @@ def get_crypto_table(clear_console=False, colored=True):
         dash_metrics.insert(0, "Dash         (DSH)")
         ripple_metrics.insert(0, "Ripple       (XRP)")
         digibyte_metrics.insert(0, "Digibyte     (DGB)")
+        stellar_metrics.insert(0, "Stellar      (XLM)")
         footer = ("Last Updated: %s \t\t\t\t\t\t\t      Total %s: %.2f"
                   % (str(datetime.now()), config.fiatCurrency, total_fiat))
     metrics.append(header)
@@ -336,6 +348,7 @@ def get_crypto_table(clear_console=False, colored=True):
     metrics.append(dash_metrics)
     metrics.append(ripple_metrics)
     metrics.append(digibyte_metrics)
+    metrics.append(stellar_metrics)
     table = AsciiTable(metrics)
     if clear_console:
         clear()
