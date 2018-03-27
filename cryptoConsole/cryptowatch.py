@@ -110,18 +110,13 @@ def main():
     )
     args = parser.parse_args()
 
-    if args.version:
-        print("Cryptowatch Version 0.0.10")
-    elif args.config:
-        cfg.config().edit()
-    elif args.file:
-        crypto_file(args.file)
+    if args.version: print("Cryptowatch Version 0.0.11")
+    elif args.config: cfg.config().edit()
+    elif args.file: crypto_file(args.file)
     elif args.monitor:
         if args.monitor in ("pie", "rpi"):
             import cryptoPie.cryptoPie as pie
             print_header()
             pie.main()
-        else:
-            console_loop()
-    else:
-        print(get_crypto_table())
+        else: console_loop()
+    else: print(get_crypto_table())
