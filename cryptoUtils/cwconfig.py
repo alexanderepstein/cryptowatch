@@ -23,7 +23,7 @@
 # SOFTWARE.
 import configparser
 from os.path import exists
-from os import system, remove, rename
+from os import system
 from sys import platform
 configParser = configparser.RawConfigParser()
 
@@ -105,6 +105,13 @@ class config(object):
             configParser.read(configFilePath)
             self.stellarAddress = map(str.strip, configParser.get('cryptoConsole-config', 'stellarAddress').split(","))
             pass
+        try:
+            self.cardanoAddress = map(str.strip, configParser.get('cryptoConsole-config', 'cardanoAddress').split(","))
+        except configparser.NoOptionError:
+            self.addCrypto("cardano")
+            configParser.read(configFilePath)
+            self.cardanoAddress = map(str.strip, configParser.get('cryptoConsole-config', 'cardanoAddress').split(","))
+            pass
         self.fiatCurrency = configParser.get('cryptoConsole-config', 'fiatCurrency')
         self.registerSelect = configParser.get('cryptoPie-config', 'registerSelect')
         self.enable = configParser.get('cryptoPie-config', 'enable')
@@ -127,17 +134,12 @@ class config(object):
             system("start " + filePath)
 
     def createConfigFile(self):
+        coinNames = ["bitcoin", "ether", "litecoin", "bitcoinCash"
+                     "dash", "ripple", "digibyte", "stellar", "cardano"]
         if not exists(configFilePath):
             with open(configFilePath, 'w+') as file:
                 file.write("[cryptoConsole-config]\n")
-                file.write("bitcoinAddress = \n")
-                file.write("etherAddress = \n")
-                file.write("litecoinAddress = \n")
-                file.write("bitcoinCashAddress = \n")
-                file.write("dashAddress = \n")
-                file.write("rippleAddress = \n")
-                file.write("digibyteAddress = \n")
-                file.write("stellarAddress = \n")
+                for coin in coinNames: file.write("%sAddress = \n" % coin)
                 file.write("fiatCurrency = USD\n\n")
                 file.write("[cryptoPie-config]\n\n")
                 file.write("# GPIO Configuration\n")
@@ -153,12 +155,11 @@ class config(object):
                 file.write(comment)
 
     def addCrypto(self, coinType):
-        lineNum = 1
+        lines = []
         with open(configFilePath, "r") as inFile:
-            with open(configFilePath + "new", "w") as outFile:
-                for line in inFile:
-                    if (lineNum == 2): outFile.write(coinType + "Address = \n")
-                    outFile.write(line)
-                    lineNum += 1
-        remove(configFilePath)
-        rename(configFilePath + "new", configFilePath)
+            for line in inFile: lines.append(line)
+            with open(configFilePath, "w") as outFile:
+                outFile.write("%s" % lines[0])
+                outFile.write("%sAddress = \n" % coinType)
+                for i in range(1,len(lines)):
+                    outFile.write("%s" % lines[i])

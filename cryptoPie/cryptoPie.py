@@ -120,16 +120,11 @@ def main():
     screen.enable_display(True)  # just in case
     screen.clear()  # just in case
     screen.home()  # start at initial position
+    coinTypes = ["bitcoin", "ethereum", "litecoin", "bitcoin-cash",
+                 "dash", "ripple", "digibyte", "stellar", "cardano"]
     try:
         while True:
-            showCryptoStats("bitcoin")
-            showCryptoStats("ethereum")
-            showCryptoStats("litecoin")
-            showCryptoStats("bitcoin-cash")
-            showCryptoStats("dash")
-            showCryptoStats("ripple")
-            showCryptoStats("digibyte")
-            showCryptoStats("stellar")
+            for coin in coinTypes: showCryptoStats(coin)
     except KeyboardInterrupt:
         screen.clear()
         screen.enable_display(False)

@@ -145,9 +145,17 @@ def get_total_crypto(coin_type):
     elif coin_type == "stellar":
         for address in config.stellarAddress:
             try:
-                url = ("https://horizon.stellar.org/accounts/" + address)
+                url = "https://horizon.stellar.org/accounts/" + address
                 response = request(url)
                 total_crypto += float(response['balances'][0]['balance']) if str(response['balances'][0]['asset_type']) == "native" else 0
+            except Exception:
+                pass
+    elif coin_type == "cardano":
+        for address in config.cardanoAddress:
+            try:
+                url = ("https://cardanoexplorer.com/api/addresses/summary/" + address)
+                response = request(url)
+                total_crypto += float(response["Right"]["caBalance"]["getCoin"]) / pow(10,6)
             except Exception:
                 pass
     return total_crypto
@@ -168,7 +176,8 @@ def get_crypto_info(coin_type, colored=False):
         - Return the metrics array
     """
     metrics = []
-    coin_types = ["bitcoin", "ethereum", "litecoin", "bitcoin-cash", "dash", "ripple", "digibyte", "stellar"]
+    coin_types = ["bitcoin", "ethereum", "litecoin", "bitcoin-cash",
+                  "dash", "ripple", "digibyte", "stellar", "cardano"]
     if coin_type not in coin_types:
         raise ValueError("Invalid coin_type")
     url = "https://api.coinmarketcap.com/v1/ticker/" + coin_type
@@ -247,6 +256,68 @@ def get_crypto_info(coin_type, colored=False):
 
     return metrics
 
+def create_header_footer(coinMetrics, colored=True):
+    total_fiat = 0
+    for metrics in coinMetrics: total_fiat += metrics[-1]
+    if colored:
+        header = [
+            Color("{automagenta}Coin Type{/automagenta}"),
+            Color(
+                "{automagenta}Price "
+                + config.fiatCurrency
+                + "{/automagenta}"
+            ),
+            Color("{automagenta}24h Volume{/automagenta}"),
+            Color("{automagenta}7d % Change{/automagenta}"),
+            Color("{automagenta}24h % Change{/automagenta}"),
+            Color("{automagenta}1h % Change{/automagenta}"),
+            Color("{automagenta}Crypto Balance{/automagenta}"),
+            Color(
+                "{automagenta}"
+                + config.fiatCurrency.upper()
+                + " Balance"
+                + "{/automagenta}"
+            )
+        ]
+        coinMetrics[0].insert(0, Color("{autocyan}Bitcoin      (BTC){/autocyan}"))
+        coinMetrics[1].insert(0, Color("{autocyan}Ethereum     (ETH){/autocyan}"))
+        coinMetrics[2].insert(0, Color("{autocyan}Litecoin     (LTC){/autocyan}"))
+        coinMetrics[3].insert(
+                              0, Color("{autocyan}Bitcoin Cash (BCH){/autocyan}"))
+        coinMetrics[4].insert(0, Color("{autocyan}Dash         (DSH){/autocyan}"))
+        coinMetrics[5].insert(0, Color("{autocyan}Ripple       (XRP){/autocyan}"))
+        coinMetrics[6].insert(0, Color("{autocyan}Digibyte     (DGB){/autocyan}"))
+        coinMetrics[7].insert(0, Color("{autocyan}Stellar      (XLM){/autocyan}"))
+        coinMetrics[8].insert(0, Color("{autocyan}Cardano      (ADA){/autocyan}"))
+        footer = Color(
+            "{automagenta}Last Updated: %s{/automagenta}\t\t\t\t\t\t\t      "
+            "{autogreen}Total %s: %.2f{/autogreen}"
+            % (str(datetime.now()), config.fiatCurrency, total_fiat)
+        )
+    else:
+        header = [
+                "Coin Type",
+                "Price " + config.fiatCurrency,
+                "24h Volume",
+                "7d % Change",
+                "24h % Change",
+                "1h % Change",
+                "Crypto Balance",
+                config.fiatCurrency.upper() + " Balance"
+        ]
+        coinMetrics[0].insert(0, "Bitcoin      (BTC)")
+        coinMetrics[1].insert(0, "Ethereum     (ETH)")
+        coinMetrics[2].insert(0, "Litecoin     (LTC)")
+        coinMetrics[3].insert(0, "Bitcoin Cash (BCH)")
+        coinMetrics[4].insert(0, "Dash         (DSH)")
+        coinMetrics[5].insert(0, "Ripple       (XRP)")
+        coinMetrics[6].insert(0, "Digibyte     (DGB)")
+        coinMetrics[7].insert(0, "Stellar      (XLM)")
+        coinMetrics[8].insert(0, "Cardano      (ADA)")
+        footer = ("Last Updated: %s \t\t\t\t\t\t\t      Total %s: %.2f"
+                      % (str(datetime.now()), config.fiatCurrency, total_fiat))
+    return header, footer
+
 
 def get_crypto_table(clear_console=False, colored=True):
     """
@@ -276,79 +347,13 @@ def get_crypto_table(clear_console=False, colored=True):
     ripple_metrics = get_crypto_info("ripple", colored)
     digibyte_metrics = get_crypto_info("digibyte", colored)
     stellar_metrics = get_crypto_info("stellar", colored)
-    total_fiat =   bitcoin_metrics[-1] \
-                  + ethereum_metrics[-1] \
-                  + litecoin_metrics[-1] \
-                  + bitcoin_cash_metrics[-1] \
-                  + dash_metrics[-1] \
-                  + ripple_metrics[-1] \
-                  + digibyte_metrics[-1] \
-                  + stellar_metrics[-1]
-    if colored:
-        header = [
-            Color("{automagenta}Coin Type{/automagenta}"),
-            Color(
-                "{automagenta}Price "
-                + config.fiatCurrency
-                + "{/automagenta}"
-            ),
-            Color("{automagenta}24h Volume{/automagenta}"),
-            Color("{automagenta}7d % Change{/automagenta}"),
-            Color("{automagenta}24h % Change{/automagenta}"),
-            Color("{automagenta}1h % Change{/automagenta}"),
-            Color("{automagenta}Crypto Balance{/automagenta}"),
-            Color(
-                "{automagenta}"
-                + config.fiatCurrency.upper()
-                + " Balance"
-                + "{/automagenta}"
-            )
-        ]
-        bitcoin_metrics.insert(0, Color("{autocyan}Bitcoin      (BTC){/autocyan}"))
-        ethereum_metrics.insert(0, Color("{autocyan}Ethereum     (ETH){/autocyan}"))
-        litecoin_metrics.insert(0, Color("{autocyan}Litecoin     (LTC){/autocyan}"))
-        bitcoin_cash_metrics.insert(
-            0, Color("{autocyan}Bitcoin Cash (BCH){/autocyan}")
-        )
-        dash_metrics.insert(0, Color("{autocyan}Dash         (DSH){/autocyan}"))
-        ripple_metrics.insert(0, Color("{autocyan}Ripple       (XRP){/autocyan}"))
-        digibyte_metrics.insert(0, Color("{autocyan}Digibyte     (DGB){/autocyan}"))
-        stellar_metrics.insert(0, Color("{autocyan}Stellar      (XLM){/autocyan}"))
-        footer = Color(
-            "{automagenta}Last Updated: %s{/automagenta}\t\t\t\t\t\t\t      "
-            "{autogreen}Total %s: %.2f{/autogreen}"
-            % (str(datetime.now()), config.fiatCurrency, total_fiat)
-        )
-    else:
-        header = [
-            "Coin Type",
-            "Price " + config.fiatCurrency,
-            "24h Volume",
-            "7d % Change",
-            "24h % Change",
-            "1h % Change",
-            "Crypto Balance",
-            config.fiatCurrency.upper() + " Balance"
-        ]
-        bitcoin_metrics.insert(0, "Bitcoin      (BTC)")
-        ethereum_metrics.insert(0, "Ethereum     (ETH)")
-        litecoin_metrics.insert(0, "Litecoin     (LTC)")
-        bitcoin_cash_metrics.insert(0, "Bitcoin Cash (BCH)")
-        dash_metrics.insert(0, "Dash         (DSH)")
-        ripple_metrics.insert(0, "Ripple       (XRP)")
-        digibyte_metrics.insert(0, "Digibyte     (DGB)")
-        stellar_metrics.insert(0, "Stellar      (XLM)")
-        footer = ("Last Updated: %s \t\t\t\t\t\t\t      Total %s: %.2f"
-                  % (str(datetime.now()), config.fiatCurrency, total_fiat))
+    cardano_metrics = get_crypto_info("cardano", colored)
+    coinMetrics = [bitcoin_metrics, ethereum_metrics, litecoin_metrics,
+                   bitcoin_cash_metrics, dash_metrics, ripple_metrics,
+                   digibyte_metrics, stellar_metrics, cardano_metrics]
+    header, footer = create_header_footer(coinMetrics, colored)
     metrics.append(header)
-    metrics.append(bitcoin_metrics)
-    metrics.append(ethereum_metrics)
-    metrics.append(litecoin_metrics)
-    metrics.append(bitcoin_cash_metrics)
-    metrics.append(dash_metrics)
-    metrics.append(ripple_metrics)
-    metrics.append(digibyte_metrics)
-    metrics.append(stellar_metrics)
+    for metric in coinMetrics: metrics.append(metric)
     table = AsciiTable(metrics)
     if clear_console:
         clear()
