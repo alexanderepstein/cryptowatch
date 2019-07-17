@@ -1,5 +1,6 @@
-Adafruit-GPIO==1.0.3
-Adafruit-PureIO==0.2.1
+-i https://pypi.python.org/simple/
+adafruit-gpio==1.0.3
+adafruit-pureio==0.2.1
 certifi==2017.11.5
 chardet==3.0.4
 colorclass==2.2.0
@@ -10,8 +11,8 @@ jsonschema==2.6.0
 jupyter-core==4.4.0
 nbformat==4.4.0
 pytz==2017.3
-requests==2.18.4
-six==1.11.0
+requests==2.20.0
+six==1.12.0
 spidev==3.2
 terminaltables==3.1.0
 traitlets==4.3.2
