@@ -5,7 +5,7 @@ verify_ssl = true
 [packages]
 Adafruit-GPIO = "==1.0.3"
 Adafruit-PureIO = "==0.2.1"
-certifi = "==2017.11.5"
+certifi = "==2022.12.7"
 chardet = "==3.0.4"
 colorclass = "==2.2.0"
 decorator = "==4.1.2"
